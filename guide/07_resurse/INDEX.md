@@ -11,6 +11,8 @@ Acest modul centralizeaza sursele oficiale si academice folosite in proiect, org
 - Resurse oficiale principale
 - Resurse academice pe materii
 - Resurse extinse - Limba romana
+- Resurse extinse - Limba romana (Citari Batch 01)
+- Resurse extinse - Limba romana (Citari Batch 02)
 - Instrumente utile pentru studiu
 
 **Regula de utilizare**
