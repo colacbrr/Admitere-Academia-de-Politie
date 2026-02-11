@@ -15,6 +15,12 @@ Fiecare capitol trebuie sa aiba:
 - Rezumat scurt
 - Detalii
 - Surse
+- Structura completa din `guide/00_meta/CONTENT_CHECKLIST.md`
+
+**Checklist obligatoriu**
+- Orice capitol nou sau actualizat trebuie verificat cu template-ul din `guide/00_meta/CONTENT_CHECKLIST.md`.
+- Campurile "ce invata candidatul" si "ce pregateste candidatul" sunt obligatorii.
+- Pentru sectiunile critice (inscriere, acte, termene), se completeaza si data ultimei verificari.
 
 **Note**
 - Daca o informatie este valida doar pentru o sesiune (ex: 2026), se specifica anul.

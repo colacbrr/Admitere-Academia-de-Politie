@@ -7,6 +7,12 @@ Proiectul urmareste crearea unui "Guide throughout the preparation for academic 
 Agentul trebuie sa colecteze informatii relevante de pe internet, sa le citeze prin link-uri sau mentiuni, si sa le integreze in ghidul final. Oricine citeste documentele rezultate trebuie sa poata verifica sursele online.
 Agentul trebuie sa prioritizeze surse oficiale (Academia de Politie, MAI, Ministerul Educatiei, legislatie).
 
+**Prioritati strategice (obligatorii)**
+- Prioritatea 1: informatie de studiu pentru candidat (ce invata, cum invata, ce intra la examen, explicat clar si detaliat).
+- Prioritatea 2: informatie organizatorica de inscriere (etape, acte, termene, conditii, taxe/scutiri, contestatii).
+- Aplicatia trebuie sa fie utila in primul rand pentru invatare, apoi pentru organizarea inscrierii.
+- Agentul trebuie sa extinda permanent baza de continut cu informatii noi, relevante si verificabile.
+
 **Reguli obligatorii**
 - Informatiile de baza trebuie extrase din PDF-ul oficial oferit.
 - Orice informatie externa trebuie insotita de citari clare (link sau mentiune).
@@ -14,6 +20,8 @@ Agentul trebuie sa prioritizeze surse oficiale (Academia de Politie, MAI, Minist
 - Continutul final trebuie sa fie clar, structurat si usor de urmarit.
 - Nu se publica informatii speculative sau neconfirmate.
 - Fiecare materie trebuie explicata cu exemple clare si verificabile.
+- Fiecare capitol trebuie sa raspunda clar la: "ce trebuie sa stiu", "ce trebuie sa pregatesc", "unde verific informatia".
+- Cautarea de continut nou trebuie sa fie continua (actualizari periodice, surse noi, explicatii mai bune).
 
 **Surse oficiale recomandate (de prioritate)**
 - Academia de Politie - admitere licenta: `https://admitere.academiadepolitie.ro/`
@@ -33,6 +41,7 @@ Agentul trebuie sa prioritizeze surse oficiale (Academia de Politie, MAI, Minist
 **Formatul citarii**
 - Link-urile se scriu in format cod: `https://...`
 - La fiecare sectiune, include o lista "Surse" cu link-urile folosite.
+- Cand este posibil, noteaza si data ultimei verificari pentru sursele importante.
 
 **Flux de lucru recomandat**
 1. Citirea si extragerea sectiunilor relevante din PDF.
@@ -44,6 +53,7 @@ Agentul trebuie sa prioritizeze surse oficiale (Academia de Politie, MAI, Minist
 
 **Definitia succesului**
 Un ghid complet, verificabil, cu informatii clare si citate, care acopera toate aspectele admiterii si permite oricarui cititor sa studieze in detaliu pe baza surselor indicate.
+- Succesul real inseamna: candidatul gaseste rapid materia, intelege usor ce are de invatat si poate urma fara confuzie pasii de inscriere.
 
 **Directie viitoare - aplicatie web**
 Ghidul va fi integrat intr-o aplicatie cu interfata web. Utilizatorul va porni un executabil local care ruleaza un server si hosteaza pagina web. Aplicatia va include:

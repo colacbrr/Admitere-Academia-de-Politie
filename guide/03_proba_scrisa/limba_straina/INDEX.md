@@ -1,12 +1,23 @@
 # Limba straina
 
+**Rolul sectiunii**
+Sectiunea organizeaza materia pentru limba straina (focus engleza): morfologie, sintaxa, vocabular.
+
 **Capitole**
 - Morfologie
 - Sintaxa
 - Vocabular
 
+**Regula de utilizare**
+- Incepe cu structurile morfologice.
+- Continua cu sintaxa.
+- Finalizeaza cu vocabular si aplicatii de context.
+
+**Ultima actualizare**
+- 2026-02-11
+
 **Surse**
-- Conform regulamentului din `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
-- British Council LearnEnglish (gramatica): `https://learnenglish.britishcouncil.org/grammar/english-grammar-reference/active-passive-voice`
-- Cambridge Dictionary Grammar (passive voice): `https://dictionary.cambridge.org/grammar/british-grammar/passive-voice`
-- Programa Limba moderna 1 (liceu) - Ministerul Educatiei: `https://www.edu.ro/sites/default/files/29.Limba%20moderna%201_limba%20A_limba%20B_liceu_25.03.2025.pdf`
+- Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
+- British Council: `https://learnenglish.britishcouncil.org/grammar/english-grammar-reference/active-passive-voice`
+- Cambridge Grammar: `https://dictionary.cambridge.org/grammar/british-grammar/passive-voice`
+- Programa limba moderna: `https://www.edu.ro/sites/default/files/_fi%C8%99iere/Minister/2025/programe_scolare_cons_pub/Lb_moderna_1_TC_CS_IX_EN_FR_SP_IT.pdf`

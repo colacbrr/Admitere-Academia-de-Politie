@@ -3,10 +3,16 @@ PROIECT - GHID ADMITERE ACADEMIA DE POLITIE
 **Scop**
 Construim un ghid complet pentru admitere, bazat pe regulamentul oficial si pe surse online credibile. Ghidul va deveni o aplicatie web (server Python + UI reactiv) cu navigare pe capitole, surse citate si continut explicat clar.
 
+**Misiune produs**
+- Aplicatia este construita in primul rand pentru studiu eficient (continut de examen, clar, detaliat, usor de parcurs).
+- In al doilea rand, aplicatia acopera complet partea organizatorica de inscriere.
+- Continutul trebuie extins constant cu informatii noi relevante, doar din surse credibile si verificabile.
+
 **Viziune**
 - Produs educational pentru elevi: continut dens, dar lizibil, in sesiuni lungi.
 - Continut verificabil: fiecare afirmatie importanta are sursa oficiala.
 - Structura modulara: fiecare materie, capitol si subcapitol este o unitate de UI.
+- Evolutie continua: periodic adaugam clarificari, exemple noi si resurse suplimentare pe teme relevante.
 
 **Ce livram**
 - Continut complet despre admitere: etape, probe, criterii, calendar.
@@ -44,23 +50,40 @@ Construim un ghid complet pentru admitere, bazat pe regulamentul oficial si pe s
 - Fiecare materie are capitole si subcapitole.
 - Fiecare capitol are rezumat scurt, explicatii detaliate, exemple clare si lista de surse (link-uri).
 - Toate sursele trebuie sa fie verificabile si preferabil institutionale.
+- Pentru fiecare capitol se urmareste formatul: ce inveti, ce pregatesti, ce verifici din surse.
+- Modulele de studiu au prioritate de continut fata de modulele administrative.
 
 **Politica de citare**
 - Link-urile se scriu in format cod: `https://...`
 - Fiecare sectiune are lista "Surse".
 - Pentru informatii extrase din PDF, se mentioneaza explicit documentul si sectiunea.
 - Pentru surse externe se folosesc doar site-uri oficiale sau academice.
+- Pentru sectiunile critice se recomanda si un camp "ultima verificare" (data calendaristica).
+- Rezultatele verificarilor periodice de link-uri se arhiveaza in `guide/00_meta/`.
 
 **Structura repo**
 - `guide/` contine continutul pe module.
 - `Documentatie.md` descrie arhitectura, fluxul de date si regulile de continut.
 - `Agent.md` contine regulile operative pentru agent.
 - `Planificare.md` urmareste roadmap-ul si pasii de implementare.
+- `guide/00_meta/CONTENT_CHECKLIST.md` este template-ul standard pentru fiecare capitol/subcapitol.
 
 **Build si rulare (urmeaza)**
 - Backend: comanda de rulare FastAPI va fi documentata dupa initializarea proiectului.
 - Frontend: comanda de rulare SvelteKit va fi documentata dupa initializarea proiectului.
 - Vom adauga un script comun pentru pornire locala.
+
+**Interactiune Frontend-Backend (implementat)**
+- Frontend-ul consuma API local FastAPI pentru continutul de studiu.
+- Model actual de UX: rezumat scurt in pagina + PDF oficial incarcat in `iframe`.
+- Endpoint-uri disponibile:
+- `GET /api/health`
+- `GET /api/modules`
+- `GET /api/modules/{module_id}`
+- `GET /api/study/topics`
+- `GET /api/study/topics/{topic_id}`
+- `GET /api/assets/pdfs/{pdf_name}`
+- Temele light/dark sunt persistate in `localStorage`.
 
 **Repo si livrare**
 - Proiectul va fi publicat pe GitHub.
@@ -81,6 +104,12 @@ Construim un ghid complet pentru admitere, bazat pe regulamentul oficial si pe s
 - Backend scaffold creat in `backend/` (FastAPI minimal).
 - Frontend scaffold creat in `frontend/` (SvelteKit + TypeScript).
 - Dependintele frontend sunt instalate, iar proiectul poate rula cu `npm run dev`.
+
+**Criterii de utilitate (obligatorii)**
+- Utilizatorul trebuie sa poata identifica rapid ce are de invatat pentru examen.
+- Utilizatorul trebuie sa poata gasi separat si clar pasii de inscriere.
+- Fiecare subiect important trebuie sa ofere atat explicatie, cat si sursa.
+- Continutul se imbunatateste continuu pe baza surselor noi relevante.
 
 -------------------------------------------------------------------------------
 
