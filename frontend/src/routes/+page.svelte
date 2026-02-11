@@ -226,6 +226,8 @@
 	let lastPdfUrl = '';
 	let regulationPdfUrl = '';
 	let desiredPdfUrl = '';
+	let isPdfRendering = false;
+	let pendingPdfRender = false;
 	let topicDetailCache: Record<string, TopicDetail> = {};
 	let staticStudyData: { topics: Topic[]; topic_details: Record<string, TopicDetail> } | null = null;
 
@@ -1363,13 +1365,35 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 
 	async function renderPdfPage() {
 		if (!pdfDoc || !pdfCanvas) return;
-		const page = await pdfDoc.getPage(pdfPage);
-		const viewport = page.getViewport({ scale: pdfScale });
-		const context = pdfCanvas.getContext('2d');
-		if (!context) return;
-		pdfCanvas.height = viewport.height;
-		pdfCanvas.width = viewport.width;
-		await page.render({ canvas: pdfCanvas, canvasContext: context, viewport }).promise;
+		if (isPdfRendering) {
+			pendingPdfRender = true;
+			return;
+		}
+		isPdfRendering = true;
+		try {
+			const page = await pdfDoc.getPage(pdfPage);
+			const viewport = page.getViewport({ scale: pdfScale });
+			const context = pdfCanvas.getContext('2d');
+			if (!context) return;
+			pdfCanvas.height = viewport.height;
+			pdfCanvas.width = viewport.width;
+			await page.render({ canvas: pdfCanvas, canvasContext: context, viewport }).promise;
+		} catch (error) {
+			const isCancelled =
+				typeof error === 'object' &&
+				error !== null &&
+				'name' in error &&
+				(error as { name?: string }).name === 'RenderingCancelledException';
+			if (!isCancelled) {
+				pdfError = 'Eroare la randarea PDF-ului.';
+			}
+		} finally {
+			isPdfRendering = false;
+			if (pendingPdfRender) {
+				pendingPdfRender = false;
+				void renderPdfPage();
+			}
+		}
 	}
 
 	async function renderCurrentPdfAfterMount() {
