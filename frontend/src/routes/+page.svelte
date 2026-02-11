@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
+	import { base } from '$app/paths';
 
 	type Topic = {
 		id: string;
@@ -108,7 +109,8 @@
 		role: string;
 	};
 
-	const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000';
+	const apiBase = (import.meta.env.VITE_API_BASE_URL ?? '').trim().replace(/\/$/, '');
+	const appBasePath = (base || '').replace(/\/$/, '');
 	const examDateConfig = [
 		{ label: 'Proba fizica', date: '2026-07-20' },
 		{ label: 'Proba scrisa', date: '2026-08-01' },
@@ -223,6 +225,7 @@
 	let regulationPdfUrl = '';
 	let desiredPdfUrl = '';
 	let topicDetailCache: Record<string, TopicDetail> = {};
+	let staticStudyData: { topics: Topic[]; topic_details: Record<string, TopicDetail> } | null = null;
 
 	$: selectedChapter =
 		selectedTopic?.chapters.find((chapter) => chapter.id === selectedChapterId) ??
@@ -331,6 +334,37 @@
 		const idx = cleaned.indexOf(":");
 		if (idx > 0) return cleaned.slice(idx + 1).trim();
 		return cleaned;
+	}
+
+	function withBase(path: string): string {
+		const normalized = path.startsWith('/') ? path : `/${path}`;
+		return `${appBasePath}${normalized}`;
+	}
+
+	function apiUrl(path: string): string {
+		const normalized = path.startsWith('/') ? path : `/${path}`;
+		return apiBase ? `${apiBase}${normalized}` : normalized;
+	}
+
+	function openHref(path: string): string {
+		return withBase(path);
+	}
+
+	function resolvePdfUrl(rawPath: string): string {
+		if (!rawPath) return '';
+		if (/^https?:\/\//i.test(rawPath)) return rawPath;
+		if (rawPath.startsWith('/pdfs/') || rawPath.startsWith('/mock/')) return withBase(rawPath);
+		return apiUrl(rawPath);
+	}
+
+	async function ensureStaticStudyData() {
+		if (staticStudyData) return staticStudyData;
+		const response = await fetch(withBase('/mock/study-data.json'));
+		if (!response.ok) {
+			throw new Error('Nu am putut incarca fallback-ul static pentru studiu.');
+		}
+		staticStudyData = (await response.json()) as { topics: Topic[]; topic_details: Record<string, TopicDetail> };
+		return staticStudyData;
 	}
 
 	function levelTitle(level: number): string {
@@ -468,7 +502,7 @@
 			headers.Authorization = `Bearer ${token}`;
 		}
 		try {
-			await fetch(`${apiBase}/api/telemetry/event`, {
+			await fetch(apiUrl('/api/telemetry/event'), {
 				method: 'POST',
 				headers,
 				body: JSON.stringify(payload)
@@ -490,7 +524,7 @@
 		const token = getAuthToken();
 		if (!token) return;
 		try {
-			const response = await fetch(`${apiBase}/api/auth/me`, {
+			const response = await fetch(apiUrl('/api/auth/me'), {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			if (!response.ok) {
@@ -507,7 +541,7 @@
 		const token = getAuthToken();
 		try {
 			if (token) {
-				await fetch(`${apiBase}/api/auth/logout`, {
+				await fetch(apiUrl('/api/auth/logout'), {
 					method: 'POST',
 					headers: { Authorization: `Bearer ${token}` }
 				});
@@ -537,7 +571,7 @@
 		const checklistTotal = selectedChapter.checklist.length;
 		const checklistState = checklistStateFor(selectedTopicId, selectedChapter.id);
 		try {
-			await fetch(`${apiBase}/api/progress/chapter`, {
+			await fetch(apiUrl('/api/progress/chapter'), {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -562,7 +596,7 @@
 		const token = getAuthToken();
 		if (!token) return;
 		try {
-			const response = await fetch(`${apiBase}/api/progress/chapters`, {
+			const response = await fetch(apiUrl('/api/progress/chapters'), {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			if (!response.ok) return;
@@ -644,7 +678,7 @@
 		const token = getAuthToken();
 		if (!token) return;
 		try {
-			const response = await fetch(`${apiBase}/api/progress/games`, {
+			const response = await fetch(apiUrl('/api/progress/games'), {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			if (!response.ok) return;
@@ -675,7 +709,7 @@
 		}
 		gameSyncInFlight = true;
 		try {
-			await fetch(`${apiBase}/api/progress/games`, {
+			await fetch(apiUrl('/api/progress/games'), {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -1063,7 +1097,8 @@
 		if (selectedTopicId) params.set('topic', selectedTopicId);
 		if (selectedChapterId) params.set('chapter', selectedChapterId);
 		const query = params.toString();
-		const nextUrl = query ? `/?${query}` : '/';
+		const root = openHref('/');
+		const nextUrl = query ? `${root}?${query}` : root;
 		window.history.replaceState({}, '', nextUrl);
 	}
 
@@ -1162,11 +1197,14 @@
 	}
 
 	async function fetchTopics() {
-		const response = await fetch(`${apiBase}/api/study/topics`);
-		if (!response.ok) {
-			throw new Error('Nu am putut incarca lista de teme.');
+		try {
+			const response = await fetch(apiUrl('/api/study/topics'));
+			if (!response.ok) throw new Error('api-failed');
+			topics = (await response.json()) as Topic[];
+		} catch {
+			const local = await ensureStaticStudyData();
+			topics = local.topics;
 		}
-		topics = (await response.json()) as Topic[];
 		if (!selectedTopicId && topics.length > 0) {
 			selectedTopicId = topics[0].id;
 		}
@@ -1174,11 +1212,16 @@
 	}
 
 	async function requestTopicDetail(topicId: string): Promise<TopicDetail> {
-		const response = await fetch(`${apiBase}/api/study/topics/${topicId}`);
-		if (!response.ok) {
-			throw new Error('Nu am putut incarca detaliile temei.');
+		try {
+			const response = await fetch(apiUrl(`/api/study/topics/${topicId}`));
+			if (!response.ok) throw new Error('api-failed');
+			return (await response.json()) as TopicDetail;
+		} catch {
+			const local = await ensureStaticStudyData();
+			const detail = local.topic_details[topicId];
+			if (!detail) throw new Error('Nu am putut incarca detaliile temei.');
+			return detail;
 		}
-		return (await response.json()) as TopicDetail;
 	}
 
 async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
@@ -1289,7 +1332,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		pdfLoading = true;
 		try {
 			if (!pdfReady) await initPdfJs();
-			const response = await fetch(`${apiBase}${relativePdfUrl}`);
+			const response = await fetch(resolvePdfUrl(relativePdfUrl));
 			if (!response.ok) throw new Error('Nu am putut incarca PDF-ul.');
 			const data = await response.arrayBuffer();
 			const task = pdfjsLib.getDocument({ data });
@@ -1468,9 +1511,9 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 			</p>
 		</div>
 		<div class="hero-actions">
-			<a class="hud-link" href="/status">Deschide HUD personal</a>
-			<a class="hud-link" href="/surse">Surse complete</a>
-			<a class="hud-link" href="/antrenament">Antrenament oficial</a>
+			<a class="hud-link" href={openHref('/status')}>Deschide HUD personal</a>
+			<a class="hud-link" href={openHref('/surse')}>Surse complete</a>
+			<a class="hud-link" href={openHref('/antrenament')}>Antrenament oficial</a>
 			<div class="lang-switch" aria-label="Selector limba">
 				<button type="button" class="lang-active" aria-current="true">RO</button>
 				<button type="button" class="lang-disabled" disabled title="Feature viitor">EN</button>
@@ -1484,13 +1527,13 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 				{#if authUser}
 					<p class="auth-user">Cont activ: <strong>{authUser.email}</strong></p>
 					<div class="auth-actions">
-						<a class="auth-link" href="/auth">Gestionare cont</a>
+						<a class="auth-link" href={openHref('/auth')}>Gestionare cont</a>
 						<button type="button" on:click={logoutAuth}>Logout</button>
 					</div>
 				{:else}
 					<p class="auth-user">Nu esti autentificat.</p>
 					<div class="auth-actions">
-						<a class="auth-link" href="/auth">Login / Register</a>
+						<a class="auth-link" href={openHref('/auth')}>Login / Register</a>
 					</div>
 				{/if}
 				{#if authMessage}
@@ -2012,9 +2055,9 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		<button type="button" class:active={activePane === 'study'} on:click={() => setActivePane('study')}>
 			Studiu
 		</button>
-		<a href="/status">HUD</a>
-		<a href="/surse">Surse</a>
-		<a href="/antrenament">Antrenament</a>
+		<a href={openHref('/status')}>HUD</a>
+		<a href={openHref('/surse')}>Surse</a>
+		<a href={openHref('/antrenament')}>Antrenament</a>
 	</nav>
 </div>
 
@@ -2058,9 +2101,13 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		color: var(--text);
 	}
 
+	:global(html) {
+		font-size: 15px;
+	}
+
 	.page-shell {
 		padding: 1rem;
-		max-width: 1900px;
+		max-width: 1720px;
 		margin: 0 auto;
 		min-height: 100vh;
 		padding-bottom: 4.5rem;
@@ -2941,6 +2988,10 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	}
 
 	@media (max-width: 700px) {
+		:global(html) {
+			font-size: 14px;
+		}
+
 		.learn-plan-grid {
 			grid-template-columns: 1fr;
 		}
