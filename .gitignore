@@ -40,3 +40,5 @@ backend/backend/logs/
 Thumbs.db
 *.swp
 *.swo
+.vscode/
+.idea/
