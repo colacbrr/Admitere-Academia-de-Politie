@@ -1511,18 +1511,22 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 			</p>
 		</div>
 		<div class="hero-actions">
-			<a class="hud-link" href={openHref('/status')}>Deschide HUD personal</a>
-			<a class="hud-link" href={openHref('/surse')}>Surse complete</a>
-			<a class="hud-link" href={openHref('/antrenament')}>Antrenament oficial</a>
-			<div class="lang-switch" aria-label="Selector limba">
-				<button type="button" class="lang-active" aria-current="true">RO</button>
-				<button type="button" class="lang-disabled" disabled title="Feature viitor">EN</button>
-				<button type="button" class="lang-disabled" disabled title="Feature viitor">FR</button>
+			<div class="hero-shortcuts">
+				<a class="hud-link" href={openHref('/status')}>HUD personal</a>
+				<a class="hud-link" href={openHref('/surse')}>Surse complete</a>
+				<a class="hud-link" href={openHref('/antrenament')}>Antrenament</a>
 			</div>
-			<button class="theme-toggle" on:click={toggleTheme} aria-label="Comuta tema">
-				<span class="theme-icon">{theme === 'light' ? '☀' : '🌙'}</span>
-				<span>{theme === 'light' ? 'Light mode' : 'Dark mode'}</span>
-			</button>
+			<div class="hero-controls">
+				<div class="lang-switch" aria-label="Selector limba">
+					<button type="button" class="lang-active" aria-current="true">RO</button>
+					<button type="button" class="lang-disabled" disabled title="Feature viitor">EN</button>
+					<button type="button" class="lang-disabled" disabled title="Feature viitor">FR</button>
+				</div>
+				<button class="theme-toggle" on:click={toggleTheme} aria-label="Comuta tema">
+					<span class="theme-icon">{theme === 'light' ? '☀' : '🌙'}</span>
+					<span>{theme === 'light' ? 'Light mode' : 'Dark mode'}</span>
+				</button>
+			</div>
 			<div class="auth-card">
 				{#if authUser}
 					<p class="auth-user">Cont activ: <strong>{authUser.email}</strong></p>
@@ -2106,7 +2110,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	}
 
 	.page-shell {
-		padding: 1rem;
+		padding: clamp(0.75rem, 1.6vw, 1.25rem);
 		max-width: 1720px;
 		margin: 0 auto;
 		min-height: 100vh;
@@ -2157,9 +2161,9 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	.hero {
 		display: flex;
 		justify-content: space-between;
-		gap: 1rem;
-		align-items: start;
-		padding: 1rem;
+		gap: 1.1rem;
+		align-items: stretch;
+		padding: clamp(0.85rem, 1.4vw, 1.2rem);
 		background: linear-gradient(130deg, var(--panel), var(--accent-soft));
 		border: 1px solid var(--border);
 		border-radius: 16px;
@@ -2189,11 +2193,27 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	.hero-actions {
 		display: grid;
 		gap: 0.6rem;
-		min-width: min(360px, 100%);
+		width: min(520px, 100%);
+		align-content: start;
+	}
+
+	.hero-shortcuts {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.55rem;
+	}
+
+	.hero-controls {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+		align-items: center;
 	}
 
 	.hud-link {
-		display: inline-block;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		padding: 0.52rem 0.85rem;
 		border: 1px solid color-mix(in srgb, var(--control-green), var(--border) 55%);
 		border-radius: 12px;
@@ -2240,10 +2260,10 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	.lang-switch {
 		display: inline-flex;
 		gap: 0.35rem;
+		flex-wrap: wrap;
 	}
 
 	.lang-switch button {
-		border: 1px solid var(--border);
 		border-radius: 999px;
 		padding: 0.35rem 0.6rem;
 		font-weight: 700;
@@ -2301,7 +2321,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 
 	.countdown-grid {
 		display: grid;
-		grid-template-columns: repeat(5, minmax(150px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
 		gap: 0.7rem;
 		margin-bottom: 1rem;
 	}
@@ -2353,7 +2373,15 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	.mode-nav button,
 	.mobile-controls button,
 	.intro-panel button,
-	.pdf-controls button {
+	.pdf-controls button,
+	.learn-now-actions button,
+	.game-actions button,
+	.auth-actions button,
+	.onboarding-actions button,
+	.admission-links button,
+	.topic-list button,
+	.chapter-tabs button,
+	.lang-switch button {
 		border: 1px solid color-mix(in srgb, var(--control-green), var(--border) 55%);
 		border-radius: 10px;
 		padding: 0.48rem 0.82rem;
@@ -2361,13 +2389,20 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		cursor: pointer;
 		color: var(--button-text);
 		font-weight: 600;
+		font: inherit;
 	}
 
 	.mode-nav button:hover,
 	.mobile-controls button:hover,
 	.intro-panel button:hover,
 	.pdf-controls button:hover,
-	.chapter-tabs button:hover {
+	.chapter-tabs button:hover,
+	.learn-now-actions button:hover,
+	.game-actions button:hover,
+	.auth-actions button:hover,
+	.onboarding-actions button:hover,
+	.admission-links button:hover,
+	.topic-list button:hover {
 		background: color-mix(in srgb, var(--control-green), var(--panel) 72%);
 	}
 
@@ -2383,7 +2418,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 
 	.layout-grid {
 		display: grid;
-		grid-template-columns: minmax(240px, 0.75fr) minmax(760px, 2fr);
+		grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
 		gap: 0.9rem;
 	}
 
@@ -2409,7 +2444,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 
 	.intro-grid {
 		display: grid;
-		grid-template-columns: minmax(360px, 1fr) minmax(480px, 1.1fr);
+		grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
 		gap: 1rem;
 	}
 
@@ -2461,7 +2496,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	}
 
 	.intro-pdf .pdf-canvas-wrap {
-		max-height: 60vh;
+		max-height: min(68vh, 860px);
 	}
 
 	.topic-list {
@@ -2476,7 +2511,6 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		display: grid;
 		gap: 0.15rem;
 		padding: 0.65rem;
-		border: 1px solid var(--border);
 		background: transparent;
 		border-radius: 12px;
 		color: inherit;
@@ -2501,7 +2535,6 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	}
 
 	.chapter-tabs button {
-		border: 1px solid color-mix(in srgb, var(--control-green), var(--border) 55%);
 		border-radius: 999px;
 		padding: 0.35rem 0.75rem;
 		background: color-mix(in srgb, var(--button-bg), var(--panel) 55%);
@@ -2880,7 +2913,6 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	}
 
 	.admission-links button {
-		border: 1px solid color-mix(in srgb, var(--control-green), var(--border) 55%);
 		border-radius: 999px;
 		padding: 0.34rem 0.7rem;
 		background: color-mix(in srgb, var(--control-green), var(--panel) 72%);
@@ -2947,16 +2979,26 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		text-align: center;
 	}
 
-	@media (max-width: 1400px) {
-		.countdown-grid {
-			grid-template-columns: repeat(2, minmax(180px, 1fr));
+	@media (max-width: 1280px) {
+		.hero {
+			flex-direction: column;
+		}
+
+		.hero-actions {
+			width: 100%;
+		}
+
+		.hero-shortcuts {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 
 		.layout-grid,
 		.intro-grid {
 			grid-template-columns: 1fr;
 		}
+	}
 
+	@media (max-width: 1024px) {
 		.welcome-grid,
 		.admission-steps,
 		.written-grid,
@@ -2980,16 +3022,41 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		.nav-panel.open {
 			display: block;
 		}
+	}
+
+	@media (max-width: 900px) {
+		.hero-shortcuts {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.hero-controls {
+			justify-content: space-between;
+		}
+
+		.countdown-grid {
+			grid-template-columns: repeat(2, minmax(140px, 1fr));
+		}
 
 		.mobile-bottom-nav {
 			display: grid;
 		}
-
 	}
 
 	@media (max-width: 700px) {
 		:global(html) {
 			font-size: 14px;
+		}
+
+		.hero-shortcuts {
+			grid-template-columns: 1fr;
+		}
+
+		.countdown-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.mode-nav {
+			flex-wrap: wrap;
 		}
 
 		.learn-plan-grid {
