@@ -3,39 +3,32 @@
 **Identificare**
 - Modul: `01_admitere`
 - Capitol: `inscriere_si_dosar`
-- Ultima actualizare: `2026-02-10`
+- Ultima actualizare: `2026-02-11`
 - Ultima verificare surse: `2026-02-11`
 - Autor revizie: `echipa proiect`
 
-**Ce trebuie sa invete candidatul**
-- Unde si cum se face inscrierea.
-- Ce inseamna dosar validat.
-- Ce tipuri de documente sunt obligatorii.
-
-**Ce trebuie sa pregateasca candidatul**
-- Documente de identitate.
-- Documente de studii.
-- Acte/avize solicitate prin normele de recrutare.
-- Verificare finala: dosar complet + taxa achitata sau documente de scutire.
-
 **Rezumat**
-Inscrierea se face prin unitatile de recrutare, iar dosarul trebuie sa fie complet si validat conform normelor aplicabile.
+Inscrierea si validarea dosarului sunt partea administrativa critica: daca lipsesc documente, procesul se blocheaza.
 
 **Explicatie detaliata**
-- Dosarele se constituie conform normelor MAI.
-- Inscrierea este conditionata de validarea documentelor.
-- Taxa de inscriere sau documentele de scutire fac parte din verificarea administrativa.
+- Candidatul depune dosarul conform regulilor unitatii de recrutare.
+- Validarea inseamna ca documentele sunt complete si conforme.
+- Taxa de inscriere sau documentele de scutire se verifica impreuna cu dosarul.
+- Este esentiala verificarea termenelor limita, pentru ca depunerile tardive pot fi respinse.
+- Pentru claritate, orice nelamurire se confirma direct in sursa oficiala, nu in rezumate neoficiale.
 
 **Exemple clare**
-- Exemplu 1: dosarul are toate actele, dar lipseste dovada taxei; validarea se amana pana la completare.
-- Exemplu 2: candidatul are drept de scutire, dar nu aduce documentul justificativ; dosarul nu este finalizat.
+- Exemplu 1: lipsa dovezii de plata duce la dosar incomplet.
+- Exemplu 2: candidatul are drept de scutire, dar nu aduce actul justificativ; validarea se amana.
+- Exemplu 3: candidatul depune toate actele in termen si primeste confirmare de dosar validat.
+- Exemplu 4: informatia dintr-un grup online intra in conflict cu portalul oficial; se urmeaza portalul oficial.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Am pregatit documentele personale.
-- [ ] Am pregatit documentele de studii.
-- [ ] Am verificat daca imi trebuie avize/documente suplimentare.
-- [ ] Am dovada taxei sau dovada de scutire.
-- [ ] Am confirmarea ca dosarul este validat.
+- [ ] Am lista oficiala de documente.
+- [ ] Am completat toate documentele cerute.
+- [ ] Am dovada platii sau documentele de scutire.
+- [ ] Am confirmarea validarii dosarului.
+- [ ] Am verificat termenele oficiale de inscriere.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`

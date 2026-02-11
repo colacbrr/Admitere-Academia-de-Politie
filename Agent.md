@@ -81,6 +81,7 @@ Agentul trebuie sa structureze continutul astfel incat sa poata fi usor mapat in
 
 **Directie viitoare - gamificare**
 Se vor evalua mecanici simple (progres, badge-uri, streak-uri), dar numai dupa stabilizarea continutului.
+- Directie asumata: sistem de nivel 1-10; nivel 10 presupune parcurgerea integrala a capitolelor, checklist-urilor si quiz-urilor.
 
 **Documentatie obligatorie**
 - `Documentatie.md` trebuie sa descrie toate componentele proiectului (continut, arhitectura, UI, flux de date, citare).

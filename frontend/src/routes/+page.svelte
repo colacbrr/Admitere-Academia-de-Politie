@@ -1,9 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import * as pdfjsLib from 'pdfjs-dist';
-	import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-
-	pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 	type Topic = {
 		id: string;
@@ -59,11 +55,19 @@
 	let errorMessage = '';
 	let countdown: CountdownItem[] = [];
 
+	let activePane: 'intro' | 'study' = 'intro';
+	let mobileMainPane: 'study' | 'pdf' = 'study';
+	let isNavOpen = false;
+
+	let visitedChapters: Record<string, boolean> = {};
 	let completedChecklist: Record<string, Record<string, boolean>> = {};
+	let checklistTotals: Record<string, number> = {};
 	let badges: string[] = [];
 
 	let pdfCanvas: HTMLCanvasElement | null = null;
-	let pdfDoc: import('pdfjs-dist').PDFDocumentProxy | null = null;
+	let pdfjsLib: any = null;
+	let pdfReady = false;
+	let pdfDoc: any = null;
 	let pdfPage = 1;
 	let pdfPages = 0;
 	let pdfScale = 1.2;
@@ -76,13 +80,28 @@
 		selectedTopic?.chapters[0] ??
 		null;
 
+	$: if (selectedChapter && selectedTopicId) {
+		const key = chapterKey(selectedTopicId, selectedChapter.id);
+		if (!visitedChapters[key]) {
+			visitedChapters[key] = true;
+			visitedChapters = { ...visitedChapters };
+			saveProgress();
+		}
+		if (selectedChapter.checklist.length > 0) {
+			checklistTotals[key] = selectedChapter.checklist.length;
+			checklistTotals = { ...checklistTotals };
+			saveProgress();
+		}
+		void recalcBadges();
+	}
+
 	$: if (selectedTopic?.pdf_url && selectedTopic.pdf_url !== lastPdfUrl) {
 		lastPdfUrl = selectedTopic.pdf_url;
 		void loadPdf(selectedTopic.pdf_url);
 	}
 
-	$: if (selectedChapter) {
-		void recalcBadges();
+	function chapterKey(topicId: string, chapterId: string): string {
+		return `${topicId}::${chapterId}`;
 	}
 
 	function applyTheme(nextTheme: 'light' | 'dark') {
@@ -105,66 +124,83 @@
 		});
 	}
 
-	function chapterKey(chapterId: string): string {
-		return `${selectedTopicId}::${chapterId}`;
-	}
-
 	function sourceUrl(raw: string): string | null {
 		const match = raw.match(/https?:\/\/[^\s)]+/);
 		return match ? match[0] : null;
 	}
 
-	function loadChecklistState() {
-		const saved = localStorage.getItem('study-checklist-state');
-		if (!saved) return;
+	function loadProgress() {
 		try {
-			completedChecklist = JSON.parse(saved) as Record<string, Record<string, boolean>>;
+			visitedChapters = JSON.parse(localStorage.getItem('study-visited-chapters') ?? '{}');
+			completedChecklist = JSON.parse(localStorage.getItem('study-checklist-state') ?? '{}');
+			checklistTotals = JSON.parse(localStorage.getItem('study-checklist-totals') ?? '{}');
 		} catch {
+			visitedChapters = {};
 			completedChecklist = {};
+			checklistTotals = {};
 		}
 	}
 
-	function saveChecklistState() {
+	function saveProgress() {
+		localStorage.setItem('study-visited-chapters', JSON.stringify(visitedChapters));
 		localStorage.setItem('study-checklist-state', JSON.stringify(completedChecklist));
+		localStorage.setItem('study-checklist-totals', JSON.stringify(checklistTotals));
 	}
 
 	function isChecked(chapterId: string, idx: number): boolean {
-		const key = chapterKey(chapterId);
+		if (!selectedTopicId) return false;
+		const key = chapterKey(selectedTopicId, chapterId);
 		return completedChecklist[key]?.[String(idx)] === true;
 	}
 
 	function toggleChecklist(chapterId: string, idx: number) {
-		const key = chapterKey(chapterId);
+		if (!selectedTopicId) return;
+		const key = chapterKey(selectedTopicId, chapterId);
 		if (!completedChecklist[key]) completedChecklist[key] = {};
 		const id = String(idx);
 		completedChecklist[key][id] = !completedChecklist[key][id];
-		saveChecklistState();
+		completedChecklist = { ...completedChecklist };
+		saveProgress();
 		void recalcBadges();
 	}
 
-	function checklistProgress(chapter: Chapter | null): { done: number; total: number; pct: number } {
-		if (!chapter) return { done: 0, total: 0, pct: 0 };
+	function chapterChecklistProgress(chapter: Chapter | null): { done: number; total: number; pct: number } {
+		if (!chapter || !selectedTopicId) return { done: 0, total: 0, pct: 0 };
+		const key = chapterKey(selectedTopicId, chapter.id);
 		const total = chapter.checklist.length;
 		if (total === 0) return { done: 0, total: 0, pct: 0 };
 		let done = 0;
 		for (let i = 0; i < total; i += 1) {
-			if (isChecked(chapter.id, i)) done += 1;
+			if (completedChecklist[key]?.[String(i)] === true) done += 1;
 		}
 		return { done, total, pct: Math.round((done / total) * 100) };
 	}
 
-	async function recalcBadges() {
-		const chapter = selectedChapter;
-		if (!chapter) {
-			badges = [];
-			return;
+	function globalProgress(): { visited: number; chapters: number; checklistDone: number; checklistTotal: number; pct: number; level: number } {
+		const visited = Object.values(visitedChapters).filter(Boolean).length;
+		const chapters = topics.reduce((sum, t) => sum + t.chapter_count, 0);
+		let checklistDone = 0;
+		let checklistTotal = 0;
+		for (const [key, total] of Object.entries(checklistTotals)) {
+			checklistTotal += total;
+			const state = completedChecklist[key] ?? {};
+			checklistDone += Object.values(state).filter(Boolean).length;
 		}
-		const progress = checklistProgress(chapter);
+		const chapterPct = chapters > 0 ? visited / chapters : 0;
+		const checklistPct = checklistTotal > 0 ? checklistDone / checklistTotal : 0;
+		const pct = Math.round((chapterPct * 0.5 + checklistPct * 0.5) * 100);
+		const level = Math.min(10, Math.max(1, Math.ceil(pct / 10) || 1));
+		return { visited, chapters, checklistDone, checklistTotal, pct, level };
+	}
+
+	async function recalcBadges() {
+		const progress = globalProgress();
 		const nextBadges: string[] = [];
-		if (progress.pct >= 25) nextBadges.push('Starter');
-		if (progress.pct >= 50) nextBadges.push('Consistent');
-		if (progress.pct >= 75) nextBadges.push('Focused');
-		if (progress.pct === 100) nextBadges.push('Ready');
+		if (progress.pct >= 20) nextBadges.push('Starter');
+		if (progress.pct >= 40) nextBadges.push('Consistent');
+		if (progress.pct >= 60) nextBadges.push('Advanced');
+		if (progress.pct >= 80) nextBadges.push('Top Focus');
+		if (progress.pct === 100) nextBadges.push('Level 10 Candidate');
 		badges = nextBadges;
 	}
 
@@ -191,6 +227,9 @@
 	async function selectTopic(topicId: string) {
 		selectedTopicId = topicId;
 		errorMessage = '';
+		activePane = 'study';
+		mobileMainPane = 'study';
+		isNavOpen = false;
 		try {
 			await fetchTopicDetail(topicId);
 		} catch (error) {
@@ -198,10 +237,20 @@
 		}
 	}
 
+	async function initPdfJs() {
+		if (pdfReady) return;
+		const pdfModule = await import('pdfjs-dist/legacy/build/pdf.mjs');
+		const workerModule = await import('pdfjs-dist/legacy/build/pdf.worker.min.mjs?url');
+		pdfjsLib = pdfModule;
+		pdfjsLib.GlobalWorkerOptions.workerSrc = workerModule.default;
+		pdfReady = true;
+	}
+
 	async function loadPdf(relativePdfUrl: string) {
 		pdfError = '';
 		pdfLoading = true;
 		try {
+			if (!pdfReady) await initPdfJs();
 			const response = await fetch(`${apiBase}${relativePdfUrl}`);
 			if (!response.ok) throw new Error('Nu am putut incarca PDF-ul.');
 			const data = await response.arrayBuffer();
@@ -253,6 +302,7 @@
 	}
 
 	onMount(async () => {
+		await initPdfJs();
 		const savedTheme = localStorage.getItem('study-theme');
 		if (savedTheme === 'light' || savedTheme === 'dark') {
 			applyTheme(savedTheme);
@@ -260,14 +310,16 @@
 			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 			applyTheme(prefersDark ? 'dark' : 'light');
 		}
+
 		computeCountdown();
-		loadChecklistState();
+		loadProgress();
 
 		try {
 			await fetchTopics();
 			if (selectedTopicId) {
 				await fetchTopicDetail(selectedTopicId);
 			}
+			await recalcBadges();
 		} catch (error) {
 			errorMessage = error instanceof Error ? error.message : 'Eroare necunoscuta';
 		} finally {
@@ -278,26 +330,26 @@
 
 <svelte:head>
 	<title>Ghid Admitere - Platforma de studiu</title>
-	<meta
-		name="description"
-		content="Platforma de studiu pentru admiterea la Academia de Politie: continut detaliat, calendar, gamification si surse verificabile."
-	/>
 </svelte:head>
 
 <div class="page-shell">
 	<header class="hero">
 		<div>
 			<p class="eyebrow">Admitere Academia de Politie</p>
-			<h1>Platforma de studiu si inscriere</h1>
+			<h1>Platforma de studiu si organizare</h1>
 			<p class="intro">
-				Parcurgi capitolele in ordinea recomandata, studiezi detaliat fiecare subiect si verifici sursele
-				oficale direct din platforma.
+				Aici gasesti continut de invatare pentru examenul scris, informatii de inscriere, resurse citate si
+				progress tracker. Scopul final de gamification este nivel 10: toate capitolele, checklist-urile si
+				intrebarile parcurse integral.
 			</p>
 		</div>
-		<button class="theme-toggle" on:click={toggleTheme} aria-label="Comuta tema">
-			<span>{theme === 'light' ? 'L' : 'D'}</span>
-			<span>{theme === 'light' ? 'Light' : 'Dark'}</span>
-		</button>
+		<div class="hero-actions">
+			<a class="hud-link" href="/status">Deschide HUD personal</a>
+			<button class="theme-toggle" on:click={toggleTheme} aria-label="Comuta tema">
+				<span>{theme === 'light' ? 'L' : 'D'}</span>
+				<span>{theme === 'light' ? 'Light' : 'Dark'}</span>
+			</button>
+		</div>
 	</header>
 
 	<section class="countdown-grid">
@@ -310,144 +362,201 @@
 		{/each}
 	</section>
 
-	{#if isLoading}
-		<p class="state">Se incarca datele...</p>
-	{:else if errorMessage}
-		<p class="state error">{errorMessage}</p>
-	{:else}
-		<main class="layout-grid">
-			<aside class="panel nav-panel">
-				<h2>Navigare module</h2>
-				<p class="panel-subtitle">Selecteaza un modul si apoi un capitol.</p>
-				<div class="topic-list">
-					{#each topics as topic}
-						<button
-							type="button"
-							on:click={() => selectTopic(topic.id)}
-							class:selected={topic.id === selectedTopicId}
-						>
-							<strong>{topic.title}</strong>
-							<span>{topic.chapter_count} capitole</span>
-						</button>
-					{/each}
-				</div>
-			</aside>
+	<nav class="mode-nav">
+		<button class:active={activePane === 'intro'} on:click={() => (activePane = 'intro')}>Introducere</button>
+		<button class:active={activePane === 'study'} on:click={() => (activePane = 'study')}>Studiu</button>
+	</nav>
 
-			<section class="panel study-panel">
-				{#if selectedTopic}
-					<h2>{selectedTopic.title}</h2>
-					<p class="panel-subtitle">{selectedTopic.summary}</p>
+	{#if activePane === 'intro'}
+		<section class="panel intro-panel">
+			<h2>Introducere</h2>
+			<p>
+				Platforma este impartita pe module. Incepi cu `01_admitere` pentru procesul administrativ, continui cu
+				`03_proba_scrisa` pentru invatare detaliata, iar la final folosesti `06_intrebari` si `07_resurse` pentru
+				consolidare.
+			</p>
+			<ul>
+				<li>`01_admitere` -> etape, eligibilitate, dosar, taxe, contestatii</li>
+				<li>`02_proba_fizica` -> reguli, traseu, pregatire fizica</li>
+				<li>`03_proba_scrisa` -> romana, istorie, limba straina, notare</li>
+				<li>`04_medical` -> acte si reguli etapa medicala</li>
+				<li>`05_calendar` -> termene si actualizari</li>
+				<li>`06_intrebari` + `07_resurse` -> clarificari si citari extinse</li>
+			</ul>
+			<p>
+				Recomandare de utilizare: deschizi un capitol, bifezi checklist-ul, verifici sursele, apoi treci la
+				urmatorul. Progress-ul se salveaza automat.
+			</p>
+			<button type="button" on:click={() => (activePane = 'study')}>Incepe studiul</button>
+		</section>
+	{/if}
 
-					<div class="chapter-tabs">
-						{#each selectedTopic.chapters as chapter}
+	{#if activePane === 'study'}
+		{#if isLoading}
+			<p class="state">Se incarca datele...</p>
+		{:else if errorMessage}
+			<p class="state error">{errorMessage}</p>
+		{:else}
+			<div class="mobile-controls">
+				<button type="button" on:click={() => (isNavOpen = !isNavOpen)}>
+					{isNavOpen ? 'Inchide navigarea' : 'Deschide navigarea'}
+				</button>
+				<button type="button" class:active={mobileMainPane === 'study'} on:click={() => (mobileMainPane = 'study')}
+					>Admitere</button
+				>
+				<button type="button" class:active={mobileMainPane === 'pdf'} on:click={() => (mobileMainPane = 'pdf')}
+					>PDF</button
+				>
+			</div>
+
+			<main class="layout-grid">
+				<aside class:open={isNavOpen} class="panel nav-panel">
+					<h2>Navigare module</h2>
+					<p class="panel-subtitle">Selecteaza modulul dorit.</p>
+					<div class="topic-list">
+						{#each topics as topic}
 							<button
 								type="button"
-								on:click={() => (selectedChapterId = chapter.id)}
-								class:active={selectedChapter?.id === chapter.id}
+								on:click={() => selectTopic(topic.id)}
+								class:selected={topic.id === selectedTopicId}
 							>
-								{chapter.title}
+								<strong>{topic.title}</strong>
+								<span>{topic.chapter_count} capitole</span>
 							</button>
 						{/each}
 					</div>
+				</aside>
 
-					{#if selectedChapter}
+				<section class:mobile-hidden={mobileMainPane !== 'study'} class="panel study-panel">
+					{#if selectedTopic && selectedChapter}
+						<h2>{selectedTopic.title}</h2>
+						<p class="panel-subtitle">{selectedTopic.summary}</p>
+
+						<div class="chapter-tabs">
+							{#each selectedTopic.chapters as chapter}
+								<button
+									type="button"
+									on:click={() => (selectedChapterId = chapter.id)}
+									class:active={selectedChapter.id === chapter.id}
+								>
+									{chapter.title}
+								</button>
+							{/each}
+						</div>
+
 						<article class="chapter-card">
 							<h3>{selectedChapter.title}</h3>
 							<p>{selectedChapter.summary}</p>
 
-							<h4>Ce trebuie sa inveti</h4>
-							<ul>
-								{#each selectedChapter.learning_objectives as item}
-									<li>{item}</li>
-								{/each}
-							</ul>
+							{#if selectedChapter.learning_objectives.length > 0}
+								<h4>Ce trebuie sa inveti</h4>
+								<ul>
+									{#each selectedChapter.learning_objectives as item}
+										<li>{item}</li>
+									{/each}
+								</ul>
+							{/if}
 
-							<h4>Ce trebuie sa pregatesti</h4>
-							<ul>
-								{#each selectedChapter.preparation_steps as item}
-									<li>{item}</li>
-								{/each}
-							</ul>
+							{#if selectedChapter.preparation_steps.length > 0}
+								<h4>Ce trebuie sa pregatesti</h4>
+								<ul>
+									{#each selectedChapter.preparation_steps as item}
+										<li>{item}</li>
+									{/each}
+								</ul>
+							{/if}
 
-							<h4>Informatii detaliate</h4>
-							<ul>
-								{#each selectedChapter.details as detail}
-									<li>{detail}</li>
-								{/each}
-							</ul>
+							{#if selectedChapter.details.length > 0}
+								<h4>Informatii detaliate</h4>
+								<ul>
+									{#each selectedChapter.details as detail}
+										<li>{detail}</li>
+									{/each}
+								</ul>
+							{/if}
 
-							<h4>Exemple</h4>
-							<ul>
-								{#each selectedChapter.examples as item}
-									<li>{item}</li>
-								{/each}
-							</ul>
+							{#if selectedChapter.examples.length > 0}
+								<h4>Exemple</h4>
+								<ul>
+									{#each selectedChapter.examples as item}
+										<li>{item}</li>
+									{/each}
+								</ul>
+							{/if}
 
-							<h4>Checklist de progres</h4>
-							<div class="progress-row">
-								<strong>{checklistProgress(selectedChapter).done}/{checklistProgress(selectedChapter).total}</strong>
-								<span>{checklistProgress(selectedChapter).pct}% complet</span>
-							</div>
-							<ul class="checklist-list">
-								{#each selectedChapter.checklist as item, idx}
-									<li>
-										<label>
-											<input
-												type="checkbox"
-												checked={isChecked(selectedChapter.id, idx)}
-												on:change={() => toggleChecklist(selectedChapter.id, idx)}
-											/>
-											<span>{item}</span>
-										</label>
-									</li>
-								{/each}
-							</ul>
+							{#if selectedChapter.checklist.length > 0}
+								<h4>Checklist de progres</h4>
+								<div class="progress-row">
+									<strong>{chapterChecklistProgress(selectedChapter).done}/{chapterChecklistProgress(selectedChapter).total}</strong>
+									<span>{chapterChecklistProgress(selectedChapter).pct}% complet</span>
+								</div>
+								<ul class="checklist-list">
+									{#each selectedChapter.checklist as item, idx}
+										<li>
+											<label>
+												<input
+													type="checkbox"
+													checked={isChecked(selectedChapter.id, idx)}
+													on:change={() => toggleChecklist(selectedChapter.id, idx)}
+												/>
+												<span>{item}</span>
+											</label>
+										</li>
+									{/each}
+								</ul>
+							{/if}
 
 							<div class="gamify-box">
 								<h4>Gamification</h4>
-								<p>Puncte progres: {checklistProgress(selectedChapter).done * 10}</p>
+								<p>Progres total: {globalProgress().pct}%</p>
+								<p>Nivel curent: {globalProgress().level} / 10</p>
+								<p>Capitole parcurse: {globalProgress().visited} / {globalProgress().chapters}</p>
+								<p>Checklist bifat: {globalProgress().checklistDone} / {globalProgress().checklistTotal}</p>
 								<p>Badge-uri: {badges.length > 0 ? badges.join(', ') : 'Niciun badge inca'}</p>
+								<p class="muted-note">Nivel 10 complet va include si quiz-urile finale pe capitole (etapa urmatoare).</p>
 							</div>
 
-							<h4>Surse si portale utile</h4>
-							<ul class="source-list">
-								{#each selectedChapter.sources as source}
-									<li>
-										{#if sourceUrl(source)}
-											<a href={sourceUrl(source)} target="_blank" rel="noreferrer">{source}</a>
-										{:else}
-											<span>{source}</span>
-										{/if}
-									</li>
-								{/each}
-							</ul>
+							{#if selectedChapter.sources.length > 0}
+								<h4>Surse si portale</h4>
+								<ul class="source-list">
+									{#each selectedChapter.sources as source}
+										<li>
+											{#if sourceUrl(source)}
+												<a href={sourceUrl(source)} target="_blank" rel="noreferrer">{source}</a>
+											{:else}
+												<span>{source}</span>
+											{/if}
+										</li>
+									{/each}
+								</ul>
+							{/if}
 						</article>
 					{/if}
-				{/if}
-			</section>
+				</section>
 
-			<section class="panel pdf-panel">
-				<h2>Regulament PDF (inline)</h2>
-				<p class="panel-subtitle">PDF-ul este randat in aplicatie, fara descarcare fortata.</p>
-				<div class="pdf-controls">
-					<button type="button" on:click={prevPdfPage} disabled={pdfPage <= 1}>Pagina anterioara</button>
-					<span>{pdfPages > 0 ? `Pagina ${pdfPage} / ${pdfPages}` : 'PDF indisponibil'}</span>
-					<button type="button" on:click={nextPdfPage} disabled={pdfPage >= pdfPages}>Pagina urmatoare</button>
-				</div>
-				<div class="pdf-controls">
-					<button type="button" on:click={zoomOutPdf}>Zoom -</button>
-					<button type="button" on:click={zoomInPdf}>Zoom +</button>
-				</div>
-				{#if pdfLoading}
-					<p class="state">Se incarca PDF-ul...</p>
-				{:else if pdfError}
-					<p class="state error">{pdfError}</p>
-				{/if}
-				<div class="pdf-canvas-wrap">
-					<canvas bind:this={pdfCanvas}></canvas>
-				</div>
-			</section>
-		</main>
+				<section class:mobile-hidden={mobileMainPane !== 'pdf'} class="panel pdf-panel">
+					<h2>PDF oficial (viewer intern)</h2>
+					<p class="panel-subtitle">Fara descarcare fortata, direct in pagina.</p>
+					<div class="pdf-controls">
+						<button type="button" on:click={prevPdfPage} disabled={pdfPage <= 1}>Pagina anterioara</button>
+						<span>{pdfPages > 0 ? `Pagina ${pdfPage}/${pdfPages}` : 'PDF indisponibil'}</span>
+						<button type="button" on:click={nextPdfPage} disabled={pdfPage >= pdfPages}>Pagina urmatoare</button>
+					</div>
+					<div class="pdf-controls">
+						<button type="button" on:click={zoomOutPdf}>Zoom -</button>
+						<button type="button" on:click={zoomInPdf}>Zoom +</button>
+					</div>
+					{#if pdfLoading}
+						<p class="state">Se incarca PDF-ul...</p>
+					{:else if pdfError}
+						<p class="state error">{pdfError}</p>
+					{/if}
+					<div class="pdf-canvas-wrap">
+						<canvas bind:this={pdfCanvas}></canvas>
+					</div>
+				</section>
+			</main>
+		{/if}
 	{/if}
 </div>
 
@@ -483,7 +592,7 @@
 
 	.page-shell {
 		padding: 1rem;
-		max-width: 1800px;
+		max-width: 1900px;
 		margin: 0 auto;
 	}
 
@@ -514,9 +623,25 @@
 
 	.intro {
 		margin: 0;
-		max-width: 72ch;
+		max-width: 78ch;
 		line-height: 1.55;
 		color: var(--muted);
+	}
+
+	.hero-actions {
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.hud-link {
+		display: inline-block;
+		padding: 0.45rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		text-decoration: none;
+		color: var(--accent);
+		background: var(--panel);
+		font-weight: 600;
 	}
 
 	.theme-toggle {
@@ -556,9 +681,31 @@
 		font-size: 0.85rem;
 	}
 
+	.mode-nav {
+		display: flex;
+		gap: 0.6rem;
+		margin-bottom: 1rem;
+	}
+
+	.mode-nav button,
+	.mobile-controls button {
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		padding: 0.45rem 0.8rem;
+		background: var(--panel);
+		cursor: pointer;
+		color: inherit;
+	}
+
+	.mode-nav button.active,
+	.mobile-controls button.active {
+		background: var(--accent-soft);
+		border-color: var(--accent);
+	}
+
 	.layout-grid {
 		display: grid;
-		grid-template-columns: minmax(220px, 0.8fr) minmax(520px, 1.35fr) minmax(500px, 1.2fr);
+		grid-template-columns: minmax(220px, 0.75fr) minmax(620px, 1.5fr) minmax(620px, 1.5fr);
 		gap: 0.9rem;
 	}
 
@@ -666,6 +813,11 @@
 		margin-bottom: 0.7rem;
 	}
 
+	.muted-note {
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+
 	.source-list a {
 		color: var(--accent);
 		text-decoration: none;
@@ -710,6 +862,24 @@
 		background: #fff;
 	}
 
+	.intro-panel ul {
+		padding-left: 1.2rem;
+	}
+
+	.intro-panel button {
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		padding: 0.45rem 0.75rem;
+		background: var(--panel);
+		cursor: pointer;
+	}
+
+	.mobile-controls {
+		display: none;
+		gap: 0.5rem;
+		margin-bottom: 0.7rem;
+	}
+
 	.state {
 		padding: 0.7rem;
 		border-radius: 10px;
@@ -731,8 +901,20 @@
 			grid-template-columns: 1fr;
 		}
 
-		.topic-list {
-			max-height: 280px;
+		.mobile-controls {
+			display: flex;
+		}
+
+		.nav-panel {
+			display: none;
+		}
+
+		.nav-panel.open {
+			display: block;
+		}
+
+		.mobile-hidden {
+			display: none;
 		}
 	}
 </style>

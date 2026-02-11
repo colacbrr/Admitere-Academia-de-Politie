@@ -8,36 +8,40 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Relatiile internationale ale spatiului romanesc in Evul Mediu si modernitate timpurie.
-- Pozitionarea Romaniei in marile aliante.
-- Rolul Romaniei in contextul Razboiului Rece.
+- Pozitionarea spatiului romanesc in raport cu marile puteri.
+- Rolul aliantelor in secolul XX.
+- Logica geopolitica a perioadei Razboiului Rece.
 
 **Ce trebuie sa pregateasca candidatul**
-- Harta mentala cu actori, aliante si perioade.
-- Cronologie cu evenimente externe relevante.
-- Verificare finala: itemi de corelare eveniment-context international.
+- Harta mentala cu actori, aliante, conflicte.
+- Cronologie externa corelata cu evenimente interne.
+- Verificare finala: itemi de interpretare geopolitica simplificata.
 
 **Rezumat**
-Tema acopera diplomatia si conflictul in Evul Mediu, marile aliante ale secolului XX si Romania in Razboiul Rece.
+Tema explica relatiile externe ale Romaniei din Evul Mediu pana in perioada contemporana, cu accent pe aliante si context geopolitic.
 
 **Explicatie detaliata**
-- Spatiul romanesc intre diplomatie si conflict in Evul Mediu si la inceputurile modernitatii.
-- Romania si concertul european, marile aliante ale secolului XX.
-- Romania in perioada Razboiului Rece.
+- In Evul Mediu si modernitatea timpurie, diplomatia era strans legata de echilibrul dintre puteri regionale.
+- In secolul XX, sistemul aliantelor a influentat orientarea politica si militara a statelor.
+- In Razboiul Rece, Romania evolueaza intr-un cadru bipolar, unde deciziile externe sunt influentate de blocuri geopolitice rivale.
+- La examen, raspunsul bun leaga evenimentul de contextul international, nu doar de data.
 
 **Exemple clare**
-- Exemplu 1: incadrarea unui eveniment extern in perioada istorica potrivita.
-- Exemplu 2: explicarea efectului unei aliante asupra politicii externe romanesti.
+- Exemplu 1: daca un item mentioneaza "blocuri politico-militare", il incadrezi in logica Razboiului Rece.
+- Exemplu 2: o alianta are efecte interne (politice/economice), nu doar externe.
+- Exemplu 3: un eveniment diplomatic trebuie explicat prin interesele actorilor implicati.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Cunosc principalele contexte internationale studiate.
-- [ ] Pot corela actorii istorici cu perioada.
-- [ ] Pot explica efectele aliantelor asupra Romaniei.
-- [ ] Pot rezolva itemi de interpretare istorica internationala.
+- [ ] Pot identifica actorii principali ai unei perioade istorice.
+- [ ] Pot explica rolul unei aliante in contextul ei.
+- [ ] Pot corela contextul international cu deciziile interne.
+- [ ] Pot interpreta corect itemi de tip cauza-efect extern.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
-- Programa istorie (TC): `https://www.edu.ro/sites/default/files/_fi%C8%99iere/Minister/2025/programe_scolare_cons_pub/Istorie_TC_IX.pdf`
+- Programa Istorie TC IX: `https://www.edu.ro/sites/default/files/_fi%C8%99iere/Minister/2025/programe_scolare_cons_pub/Istorie_TC_IX.pdf`
+- Razboiul Rece (Wikipedia): `https://ro.wikipedia.org/wiki/R%C4%83zboiul_Rece`
+- Relatii internationale (Wikipedia): `https://ro.wikipedia.org/wiki/Rela%C8%9Bii_interna%C8%9Bionale`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.

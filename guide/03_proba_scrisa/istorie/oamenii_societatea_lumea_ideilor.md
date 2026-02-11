@@ -8,37 +8,44 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Democratie vs totalitarism in secolul XX.
-- Ideologii politice in Romania si Europa.
-- Repere despre constitutiile Romaniei.
+- Diferenta dintre democratie si totalitarism.
+- Ce inseamna ideologie politica in contextul secolului XX.
+- Rolul constitutiilor in organizarea statului.
 
 **Ce trebuie sa pregateasca candidatul**
-- Tabel comparativ intre regimuri politice.
-- Linii de timp pe intervale istorice relevante.
-- Verificare finala: itemi pe concepte, institutii si constitutii.
+- Fise comparative: democratie vs totalitarism.
+- Cronologie cu regimuri politice in Romania si Europa.
+- Verificare finala: itemi de analiza pe concepte + context istoric.
 
 **Rezumat**
-Tema acopera secolul XX, ideologiile politice si constitutiile Romaniei.
+Tema explica mecanismele politice ale secolului XX si modul in care ideile politice au influentat institutiile si societatea.
 
 **Explicatie detaliata**
-- Democratie si totalitarism in secolul XX.
-- Ideologii si practici politice in Romania si Europa.
-- Evolutia constitutionala a Romaniei.
+- Democratia este un regim politic in care puterea este legitimata prin participarea cetatenilor, alegeri periodice si pluralism politic.
+- Totalitarismul este un regim in care puterea este concentrata, opozitia este suprimata, iar statul controleaza extins viata publica si privata.
+- Ideologia politica este un sistem de idei despre cum trebuie organizata societatea si autoritatea politica.
+- In secolul XX, competitia dintre modele politice a influentat direct constitutiile, institutiile si drepturile cetatenesti.
+- Constitutia fixeaza regulile fundamentale ale statului: separatia puterilor, drepturi, raportul dintre autoritate si cetatean.
+- Pentru examen, accentul este pe intelegerea conceptelor in context, nu pe memorarea izolata a unor definitii.
 
 **Exemple clare**
-- Exemplu 1: identificarea trasaturilor unui regim politic intr-un item grila.
-- Exemplu 2: corelarea unei constitutii cu perioada istorica aferenta.
+- Exemplu 1: daca intr-un item apar pluralism politic, alegeri libere, opozitie legitima, contextul indica democratie.
+- Exemplu 2: daca apar partid unic, cenzura, represiune sistemica, contextul indica totalitarism.
+- Exemplu 3: corelarea unei constitutii cu perioada istorica se face prin regimul politic dominant din acel moment.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Pot diferentia clar democratie vs totalitarism.
-- [ ] Cunosc ideologiile politice principale.
-- [ ] Cunosc reperele constitutionale esentiale.
-- [ ] Pot interpreta itemi cu context politic.
+- [ ] Pot defini democratia in termeni institutionali.
+- [ ] Pot defini totalitarismul prin mecanisme concrete de control.
+- [ ] Pot explica ce este ideologia politica.
+- [ ] Pot corela constitutiile cu contextul istoric.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
 - IICCMER: `https://www.iiccmer.ro/`
 - Constitutia Romaniei: `https://legislatie.just.ro/Public/DetaliiDocument/1413`
+- Democratie (Wikipedia): `https://ro.wikipedia.org/wiki/Democra%C8%9Bie`
+- Totalitarism (Wikipedia): `https://ro.wikipedia.org/wiki/Totalitarism`
+- Ideologie (Wikipedia): `https://ro.wikipedia.org/wiki/Ideologie`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.

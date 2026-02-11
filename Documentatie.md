@@ -44,6 +44,7 @@ Construim un ghid complet pentru admitere, bazat pe regulamentul oficial si pe s
 - Controale pentru copiere rapida a link-urilor de citare.
 - Layout pentru sesiuni lungi: nav fixa, continut pe coloana larga, scroll clar.
 - Accesibilitate: contraste verificate, fonturi suficient de mari.
+- Gamification roadmap: niveluri 1-10, cu nivel 10 atins la parcurgerea completa a capitolelor, checklist-urilor si quiz-urilor finale.
 
 **Model de continut**
 - Continutul este impartit pe module: admitere, proba fizica, proba scrisa, medical, calendar, resurse.

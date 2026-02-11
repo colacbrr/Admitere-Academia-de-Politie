@@ -8,36 +8,40 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Tema romanitatii romanilor in istoriografie.
-- Principalele teorii si argumente istorice.
-- Corelarea argumentelor cu perioadele istorice.
+- Ce inseamna romanitatea romanilor in istoriografie.
+- Cum se argumenteaza o teorie istorica.
+- Cum corelezi argumentele cu epoca istorica relevanta.
 
 **Ce trebuie sa pregateasca candidatul**
-- Fise comparative intre teorii.
-- Cronologie minima cu repere istorice.
-- Verificare finala: itemi grila pe argumente si surse istorice.
+- Fisa cu teorii istorice + argumente pro/contra.
+- Cronologie orientativa pentru procesele relevante.
+- Verificare finala: itemi pe interpretare, nu doar pe date brute.
 
 **Rezumat**
-Tema include romanitatea romanilor in viziunea istoricilor si argumentele istorice principale asociate.
+Tema urmareste explicarea originilor romanilor si a spatiului istoric prin teorii si argumente istorice.
 
 **Explicatie detaliata**
-- Teorii despre romanitate.
-- Argumente istorice principale folosite in sustinerea teoriilor.
-- Importanta contextului istoric pentru interpretare corecta.
+- Romanitatea romanilor se refera la continuitatea elementului romanic in spatiul carpato-danubiano-pontic.
+- Istoriografia propune interpretari diferite, evaluate prin surse, context si coerenta argumentativa.
+- Corelarea argumentelor cu perioadele istorice se face prin identificarea sursei, a contextului politic si a limitelor interpretarii.
+- La examen conteaza capacitatea de a lega teoria de argumentul istoric concret.
 
 **Exemple clare**
-- Exemplu 1: asocierea unei teorii cu argumentele documentare relevante.
-- Exemplu 2: identificarea unei interpretari eronate a unui proces istoric.
+- Exemplu 1: un argument arheologic trebuie corelat cu perioada in care a fost produs si interpretat.
+- Exemplu 2: o teorie istorica formulata in secolul XIX trebuie citita in contextul ideologic al epocii.
+- Exemplu 3: cand doua surse se contrazic, compari data, autorul, scopul si contextul.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Cunosc teoriile principale despre romanitate.
-- [ ] Pot argumenta pe baza surselor istorice.
-- [ ] Pot integra corect cronologia in raspuns.
-- [ ] Am lucrat itemi de interpretare istorica.
+- [ ] Pot explica termenul "romanitate".
+- [ ] Pot formula un argument istoric pe baza de sursa.
+- [ ] Pot lega argumentele de perioada istorica potrivita.
+- [ ] Pot identifica limitele unei interpretari istorice.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
-- Biblioteca Digitala: `https://biblioteca-digitala.ro/?autor=Nicolae%20Iorga`
+- Biblioteca Digitala (N. Iorga): `https://biblioteca-digitala.ro/?autor=Nicolae%20Iorga`
+- Istoriografie (Wikipedia): `https://ro.wikipedia.org/wiki/Istoriografie`
+- Romanitatea romanilor (Wikipedia): `https://ro.wikipedia.org/wiki/Romanitate`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.

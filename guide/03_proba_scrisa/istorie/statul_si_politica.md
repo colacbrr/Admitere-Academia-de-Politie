@@ -8,36 +8,42 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Evolutia institutiilor si autonomiilor locale.
-- Formarea statului roman modern si Romania Mare.
-- Particularitati ale perioadei postbelice si tranzitiei democratice.
+- Evolutia institutiilor statale in spatiul romanesc.
+- Formarea statului roman modern si a Romaniei Mari.
+- Transformarile politice ale perioadei postbelice.
 
 **Ce trebuie sa pregateasca candidatul**
-- Schema cronologica pe etape istorice.
-- Fise cu evenimente si consecinte politice.
-- Verificare finala: itemi de tip cauza-efect pe procese istorice.
+- Cronologie pe etape: medieval, modern, contemporan.
+- Fise cauza-efect pentru reforme si schimbari de regim.
+- Verificare finala: exercitii de asociere eveniment-perioada.
 
 **Rezumat**
-Tema include autonomiile locale, statul roman modern, Romania Mare si evolutia politica postbelica.
+Tema urmareste evolutia statului roman, de la structuri locale la stat modern si apoi la transformarile politice contemporane.
 
 **Explicatie detaliata**
-- Autonomii locale si institutii centrale in spatiul romanesc (secolele IX-XVIII).
-- Statul roman modern si formarea Romaniei Mari.
-- Romania postbelica: stalinism, national-comunism, disidenta, democratia dupa 1989.
+- Autonomiile locale si institutiile centrale explica tranzitia de la organizari regionale la forme statale consolidate.
+- Statul roman modern se construieste prin reforme institutionale, unificare administrativa si proiect politic national.
+- Romania Mare reprezinta extinderea cadrului statal in contextul schimbarilor geopolitice de la inceputul secolului XX.
+- In perioada postbelica, stalinismul si national-comunismul modifica radical structurile politice si libertatile publice.
+- Dupa 1989, tranzitia la democratie repune in centru pluralismul, alegerile competitive si statul de drept.
 
 **Exemple clare**
-- Exemplu 1: legarea unui eveniment politic de consecintele institutionale.
-- Exemplu 2: identificarea etapelor principale din evolutia postbelica.
+- Exemplu 1: un item despre Romania Mare cere legarea evenimentului de contextul international al epocii.
+- Exemplu 2: pentru stalinism, identifici trasaturi institutionale: partid unic, control ideologic, represiune.
+- Exemplu 3: pentru democratia post-1989, identifici institutii si mecanisme democratice.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Cunosc etapele statului roman modern.
-- [ ] Pot explica formarea Romaniei Mari.
-- [ ] Pot descrie trasaturile perioadei postbelice.
-- [ ] Pot rezolva itemi cronologici si cauzali.
+- [ ] Pot descrie etapele statului roman modern.
+- [ ] Pot explica ce inseamna Romania Mare in context istoric.
+- [ ] Pot diferentia stalinism, national-comunism si tranzitie democratica.
+- [ ] Pot argumenta cauza-efect in raspunsuri istorice.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
 - IICCMER: `https://www.iiccmer.ro/`
+- Romania Mare (Wikipedia): `https://ro.wikipedia.org/wiki/Rom%C3%A2nia_Mare`
+- Stalinism (Wikipedia): `https://ro.wikipedia.org/wiki/Stalinism`
+- Revolutia din 1989 (Wikipedia): `https://ro.wikipedia.org/wiki/Revolu%C8%9Bia_rom%C3%A2n%C4%83_din_1989`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.
