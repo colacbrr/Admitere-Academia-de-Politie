@@ -1,40 +1,78 @@
 # Inscriere si dosar
 
-**Identificare**
-- Modul: `01_admitere`
-- Capitol: `inscriere_si_dosar`
-- Ultima actualizare: `2026-02-11`
-- Ultima verificare surse: `2026-02-11`
-- Autor revizie: `echipa proiect`
+**Ce trebuie sa invete candidatul**
+- Cum se constituie dosarul de recrutare si cine il transmite catre Academie.
+- Lista oficiala de documente pentru fiecare categorie de candidat.
+- Cand este validata inscrierea si ce poate bloca validarea.
+
+**Ce trebuie sa pregateasca candidatul**
+- Documentele obligatorii din regulament, in formatul cerut.
+- Dovada taxei/scutirii/reducerii, daca este cazul.
+- Contact constant cu unitatea de recrutare pana la confirmarea validarii.
 
 **Rezumat**
-Inscrierea si validarea dosarului sunt partea administrativa critica: daca lipsesc documente, procesul se blocheaza.
+Inscrierea este valida doar daca Academia primeste documentele in formatul prevazut si confirma taxa sau scutirea/reducerea aplicabila. Lista de documente difera pe categorii si trebuie urmata strict.
 
 **Explicatie detaliata**
-- Candidatul depune dosarul conform regulilor unitatii de recrutare.
-- Validarea inseamna ca documentele sunt complete si conforme.
-- Taxa de inscriere sau documentele de scutire se verifica impreuna cu dosarul.
-- Este esentiala verificarea termenelor limita, pentru ca depunerile tardive pot fi respinse.
-- Pentru claritate, orice nelamurire se confirma direct in sursa oficiala, nu in rezumate neoficiale.
+- Conform art. 9-12, documentele se depun la unitatea care recruteaza, iar aceasta transmite dosarele catre Academie.
+- **Categoria A - Candidati la forma cu frecventa (art. 11 alin. 1):**
+- cerere-tip de inscriere;
+- documente studii:
+- promotii anterioare 2026: diploma bac + foaie matricola (copii certificate/legalizate);
+- promotia 2026: adeverinta de promovare;
+- studii liceale in strainatate: atestat recunoastere MEC + diploma bac echivalenta in traducere legalizata + foaie matricola in traducere legalizata;
+- documente pentru locuri distincte (rromi, maghiari, alte minoritati, sisteme de protectie sociala etc.), daca este cazul.
+- **Categoria B - Candidati carora li se aplica art. 3 alin. (1)-(4) (art. 11 alin. 2):**
+- pe langa documentele de la Categoria A, se adauga:
+- adeverinta medicala + consimtamant informat (conform Ordinului MAI nr. 105/2020);
+- copie CI;
+- copie certificat nastere;
+- copie certificat casatorie (daca este cazul);
+- aviz psihologic sau nota compartimentului RU;
+- cazier judiciar/extras de pe cazier;
+- fotografie color 9/12 cm;
+- declaratie de confirmare a cunoasterii si acceptarii conditiilor de recrutare;
+- documente doveditoare pentru distinctiile prevazute la art. 3.
+- **Categoria C - Frecventa redusa "Ordine si siguranta publica" (art. 12):**
+- cerere-tip;
+- diploma de bac + foaie matricola (copii legalizate sau certificate).
+- **Categoria D - Programul "Drept" la distanta (art. 85):**
+- transmitere online la `cifrid@academiadepolitie.ro` in format PDF:
+- cerere inscriere;
+- CI + acte schimbare nume (daca este cazul);
+- diploma de bac;
+- foaie matricola;
+- adeverinta medicala apt pentru studii universitare de licenta;
+- declaratie pe proprie raspundere privind conformitatea documentelor electronice cu originalul.
+- Confirmarea inscrierii la ID se face pe email si contine cod unic de identificare (art. 85 alin. 2).
+- Inscrierea este conditionata de documente + taxa/scutire/reducere validate (art. 18).
+- Lista candidatilor validati se publica pe site si la avizier, conform calendarului (art. 19).
+
+**Lista oficiala de documente pentru categorii de taxa/scutire/reducere (art. 14-16)**
+- Taxa inscriere 2026: `600 lei`.
+- Scutire: orfani; copii personal didactic/didactic auxiliar; candidati din sistemul de protectie sociala.
+- Reducere 50%: copii personal sistem aparare/ordine publica/securitate nationala (activ sau pensionat).
+- Acte justificative:
+- orfani: certificat de deces parinte + certificat nastere candidat;
+- protectie sociala: documente specifice situatiei;
+- copii personal didactic: adeverinta calitate/fosta calitate parinte;
+- copii personal aparare/ordine publica activ: adeverinta cu institutia (MAI/MApN/SRI etc.);
+- copii personal aparare/ordine publica pensionat: talon pensie + certificat nastere candidat.
+- Adeverintele trebuie, intre altele, sa fie emise cu maximum 60 zile inainte de recrutare si sa contina datele candidatului (art. 16).
 
 **Exemple clare**
-- Exemplu 1: lipsa dovezii de plata duce la dosar incomplet.
-- Exemplu 2: candidatul are drept de scutire, dar nu aduce actul justificativ; validarea se amana.
-- Exemplu 3: candidatul depune toate actele in termen si primeste confirmare de dosar validat.
-- Exemplu 4: informatia dintr-un grup online intra in conflict cu portalul oficial; se urmeaza portalul oficial.
+- Exemplu 1: candidatul promotia 2026 depune adeverinta de promovare, nu diploma de bac (daca diploma nu este inca emisa).
+- Exemplu 2: candidat cu studii in strainatate fara atestat MEC -> dosar incomplet.
+- Exemplu 3: candidatul solicita reducere 50% dar nu aduce documentul corect al parintelui -> reducerea nu poate fi validata.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Am lista oficiala de documente.
-- [ ] Am completat toate documentele cerute.
-- [ ] Am dovada platii sau documentele de scutire.
-- [ ] Am confirmarea validarii dosarului.
-- [ ] Am verificat termenele oficiale de inscriere.
+- [ ] M-am incadrat intr-o categorie clara (A/B/C/D) si am lista potrivita de acte.
+- [ ] Am pregatit formatul cerut (scanat/original/copie certificata, dupa caz).
+- [ ] Am taxa achitata sau acte valide de scutire/reducere.
+- [ ] Am confirmare de la unitatea de recrutare/secretariat facultate.
+- [ ] Apar pe lista de inscriere validata publicata oficial.
 
 **Surse**
-- Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
+- Regulament oficial 2026: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf` (art. 9-12, art. 14-19, art. 85)
+- Portal oficial Academia de Politie: `https://academiadepolitie.ro/`
 - Portal admitere: `https://admitere.academiadepolitie.ro/`
-
-**Control calitate**
-- [ ] Informatiile sunt valabile pentru sesiunea 2026.
-- [ ] Nu exista afirmatii fara sursa.
-- [ ] Regulament vs explicatii suplimentare sunt separate clar.

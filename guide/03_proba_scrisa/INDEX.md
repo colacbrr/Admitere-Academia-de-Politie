@@ -1,22 +1,28 @@
 # Proba scrisa
 
 **Rolul modulului**
-Acest modul acopera integral invatarea pentru proba scrisa: structura testului, notare, discipline si subteme de studiu.
+Acest modul este nucleul de invatare pentru admitere: explica structura examenului, notarea, apoi dezvolta materia pe discipline (istorie, limba romana, limba straina) cu definitii, exemple, checklist si surse.
 
-**Prioritate pentru utilizator**
-- Identifici rapid ce trebuie invatat pe fiecare disciplina.
-- Poti planifica studiul in functie de structura reala a testului.
+**Cum se foloseste eficient**
+- Pasul 1: citesti `Structura testului` si `Notare`.
+- Pasul 2: alegi disciplina principala si parcurgi capitolele in ordine.
+- Pasul 3: bifezi checklist-urile si revii pe zonele neclare.
+- Pasul 4: consolidezi prin simulari si analiza de erori.
+
+**Standard de studiu recomandat**
+- Fiecare capitol: definitii clare + explicatie + exemple + aplicatii.
+- Fiecare sesiune: invatare + recapitulare + test rapid.
+- Fiecare saptamana: simulare completa + plan de corectie.
 
 **Capitole principale**
 - Structura testului
 - Notare si criterii de promovare
-- Limba romana
 - Istorie
+- Limba romana
 - Limba straina
 
-**Regula de utilizare**
-- Incepe cu structura si notare.
-- Continua cu materia pe discipline, pe subcapitole.
+**Obiectiv didactic al platformei**
+Candidatul sa poata reproduce corect, dupa 30 de zile, conceptele, mecanismele si exemplele esentiale pentru rezolvarea probei scrise.
 
 **Ultima actualizare**
 - 2026-02-11

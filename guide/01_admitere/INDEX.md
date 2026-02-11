@@ -1,11 +1,24 @@
 # Despre admitere
 
 **Rolul modulului**
-Acest modul acopera partea organizatorica pentru inscrierea la Academia de Politie: etape, eligibilitate, dosar, taxe/scutiri, rezultate si contestatii.
+Modulul explica partea organizatorica a admiterii 2026: eligibilitate, specializari, dosar, taxe, etape, rezultate, contestatii si termene oficiale.
 
 **Prioritate pentru utilizator**
-- Clarifici rapid ce ai de facut administrativ.
-- Eviti erorile de inscriere care pot bloca participarea la concurs.
+- Sa nu ratezi niciun termen.
+- Sa ai dosar validat din prima.
+- Sa stii exact ce urmeaza dupa fiecare etapa.
+
+**Cum se parcurge recomandat**
+- Pasul 1: `Conditii generale si eligibilitate`.
+- Pasul 2: `Inscriere si dosar`.
+- Pasul 3: `Taxa de inscriere si scutiri`.
+- Pasul 4: `Etapele concursului`.
+- Pasul 5: `Rezultate, contestatii, departajare`.
+
+**Alte informatii utile**
+- Verificarea oficiala se face pe site-ul Academiei si pe portalul de admitere.
+- Informatiile din grupuri neoficiale nu inlocuiesc regulamentul.
+- Pentru orice neclaritate de dosar, contactezi unitatea de recrutare/secretariatul relevant.
 
 **Capitole**
 - Etapele concursului
@@ -14,13 +27,10 @@ Acest modul acopera partea organizatorica pentru inscrierea la Academia de Polit
 - Taxa de inscriere si scutiri
 - Rezultate, contestatii, departajare
 
-**Regula de utilizare**
-- Parcurge capitolele in ordinea de mai sus.
-- Verifica mereu sectiunea "Surse" din fiecare capitol.
-
 **Ultima actualizare**
-- 2026-02-10
+- 2026-02-11
 
 **Surse**
-- Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
+- Regulament oficial 2026: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
+- Portal oficial Academia de Politie: `https://academiadepolitie.ro/`
 - Portal admitere: `https://admitere.academiadepolitie.ro/`

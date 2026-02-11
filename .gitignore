@@ -29,6 +29,12 @@ pnpm-debug.log*
 .env
 .env.*
 
+# Logs
+logs/
+backend/logs/
+backend/backend/logs/
+*.log
+
 # OS / Editor
 .DS_Store
 Thumbs.db

@@ -3,6 +3,11 @@
 **Scop**
 Acest proiect va deveni un "Guide throughout the preparation for academic entry exam" pentru admiterea la Academia de Politie. Ghidul final va explica complet probele de admitere si va oferi trimiteri catre surse online de incredere pentru studiu aprofundat, astfel incat oricine poate verifica informatia.
 
+**Status planificare**
+- Planul executabil pe sprinturi este documentat in `Sprinturi-MVP.md`.
+- Deciziile de produs normalizate sunt documentate in `Decizii-MVP.md`.
+- Pentru decizia de infrastructura/deploy, vezi `Deploy.md`.
+
 **Directie de produs (obligatorie)**
 - Prioritate maxima: continutul de studiu pentru examen (materie, subiecte, explicatii detaliate, exemple, surse).
 - Prioritate secundara: organizarea inscrierii (acte, etape, termene, conditii).

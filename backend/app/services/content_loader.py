@@ -8,6 +8,10 @@ from urllib.parse import quote
 REPO_ROOT = Path(__file__).resolve().parents[3]
 GUIDE_DIR = REPO_ROOT / "guide"
 PDF_ROOT = REPO_ROOT
+EXAMS_ARCHIVE_CANDIDATES = [
+    REPO_ROOT / "Subiecte-raspunsuri-din-anii-precedenti" / "Subiecte-raspunsuri-din-anii-precedenti",
+    REPO_ROOT / "Subiecte-raspunsuri-din-anii-precedenti",
+]
 
 
 def _module_title(dirname: str) -> str:
@@ -166,8 +170,19 @@ def _topic_chapters(topic_id: str) -> list[dict]:
         return []
 
     chapters: list[dict] = []
+    hidden_names = {
+        "INDEX.MD",
+        "QUALITY_90_CHECK.MD",
+        "QUALITY_CHECK.MD",
+        "CONTENT_CHECKLIST.MD",
+        "README.MD",
+    }
     for md_file in sorted(topic_dir.rglob("*.md")):
-        if md_file.name.upper() == "INDEX.MD":
+        upper_name = md_file.name.upper()
+        upper_stem = md_file.stem.upper()
+        if upper_name in hidden_names:
+            continue
+        if upper_stem.endswith("_CHECK"):
             continue
         chapters.append(_parse_markdown_chapter(md_file))
 
@@ -237,3 +252,69 @@ def resolve_pdf_file(pdf_name: str) -> Path | None:
     if not file_path.exists() or file_path.suffix.lower() != ".pdf":
         return None
     return file_path
+
+
+def resolve_module_pdf_file(module_id: str, relative_path: str) -> Path | None:
+    module_dir = (GUIDE_DIR / module_id).resolve()
+    if not module_dir.exists() or not module_dir.is_dir():
+        return None
+
+    file_path = (module_dir / relative_path).resolve()
+    if not str(file_path).startswith(str(module_dir)):
+        return None
+    if not file_path.exists() or not file_path.is_file() or file_path.suffix.lower() != ".pdf":
+        return None
+    return file_path
+
+
+def _find_exams_archive_root() -> Path | None:
+    for candidate in EXAMS_ARCHIVE_CANDIDATES:
+        if candidate.exists() and candidate.is_dir():
+            return candidate
+    return None
+
+
+def list_official_exam_pdfs() -> dict:
+    root = _find_exams_archive_root()
+    if root is None:
+        return {"root": "", "categories": []}
+
+    categories: list[dict] = []
+    for category_dir in sorted(root.iterdir()):
+        if not category_dir.is_dir():
+            continue
+        years: list[dict] = []
+        for year_dir in sorted(category_dir.iterdir()):
+            if not year_dir.is_dir():
+                continue
+            files = []
+            for pdf in sorted(year_dir.rglob("*.pdf")):
+                rel = str(pdf.relative_to(root)).replace("\\", "/")
+                files.append(
+                    {
+                        "name": pdf.name,
+                        "path": rel,
+                        "url": f"/api/assets/exams/{quote(rel)}",
+                    }
+                )
+            if files:
+                years.append({"year": year_dir.name, "files": files})
+        if years:
+            categories.append({"name": category_dir.name, "years": years})
+
+    return {
+        "root": str(root.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "categories": categories,
+    }
+
+
+def resolve_official_exam_pdf(file_path: str) -> Path | None:
+    root = _find_exams_archive_root()
+    if root is None:
+        return None
+    full = (root / file_path).resolve()
+    if not str(full).startswith(str(root.resolve())):
+        return None
+    if not full.exists() or not full.is_file() or full.suffix.lower() != ".pdf":
+        return None
+    return full

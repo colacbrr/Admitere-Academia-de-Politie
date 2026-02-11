@@ -105,6 +105,9 @@ Construim un ghid complet pentru admitere, bazat pe regulamentul oficial si pe s
 - Backend scaffold creat in `backend/` (FastAPI minimal).
 - Frontend scaffold creat in `frontend/` (SvelteKit + TypeScript).
 - Dependintele frontend sunt instalate, iar proiectul poate rula cu `npm run dev`.
+- Setul oficial de decizii de produs pentru MVP este documentat in `Decizii-MVP.md`.
+- Optiunile si statusul deciziei de deploy sunt documentate in `Deploy.md`.
+- Backlog-ul executabil pe 4 sprinturi este documentat in `Sprinturi-MVP.md`.
 
 **Criterii de utilitate (obligatorii)**
 - Utilizatorul trebuie sa poata identifica rapid ce are de invatat pentru examen.

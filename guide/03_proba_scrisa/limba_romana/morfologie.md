@@ -1,59 +1,69 @@
 # Morfologie
 
-**Identificare**
-- Modul: `03_proba_scrisa`
-- Capitol: `limba_romana/morfologie`
-- Ultima actualizare: `2026-02-11`
-- Ultima verificare surse: `2026-02-11`
-- Autor revizie: `echipa proiect`
-
 **Ce trebuie sa invete candidatul**
-- Clasele morfologice variabile si nevariabile.
-- Categoriile gramaticale (gen, numar, caz, persoana, timp, mod).
-- Acordurile obligatorii in enunt.
+- Clasele morfologice fundamentale si trasaturile lor.
+- Categoriile gramaticale pentru substantiv, adjectiv, pronume, verb.
+- Formele nepersonale ale verbului si functiile lor in enunt.
+- Tiparele de acord corect in limba romana standard.
 
 **Ce trebuie sa pregateasca candidatul**
-- Tabel de recapitulare pentru fiecare parte de vorbire.
-- Exercitii de identificare a valorii morfologice in context.
-- Set separat pentru verbe si forme nepersonale.
-- Verificare finala: test mixt (verb + pronume + adjectiv + articol).
+- Tabele de recunoastere rapida pe parti de vorbire.
+- Lista de capcane: pronume clitice, acorduri dificile, forme verbale confuze.
+- Set zilnic de itemi cu justificare gramaticala.
+- Mini-test saptamanal de morfologie aplicata.
 
 **Rezumat**
-Morfologia consolideaza structura cuvantului in limba romana si regulile de utilizare corecta in context.
+Morfologia este infrastructura analizei gramaticale. Fara identificarea corecta a valorii morfologice, raspunsurile la itemii de limba romana devin instabile.
 
 **Explicatie detaliata**
-- Substantivul: comun/propriu, concret/abstract, individual/colectiv.
-- Substantivul are gen, numar, caz; functia sintactica depinde de context.
-- Articolul poate fi hotarat, nehotarat, posesiv, demonstrativ.
-- Adjectivul se acorda in gen, numar, caz cu substantivul determinat.
-- Pronumele are clase multiple: personal, de politete, posesiv, demonstrativ, relativ, nehotarat.
-- Verbul: diateza activa/pasiva/reflexiva, moduri personale si nepersonale.
-- Modurile personale: indicativ, conjunctiv, conditional-optativ, imperativ.
-- Forme nepersonale: infinitiv, gerunziu, participiu, supin.
-- Adverbul exprima circumstante; unele adverbe au grade de comparatie.
-- Prepozitia introduce complemente; alegerea prepozitiei corecte afecteaza sensul.
+- Morfologia studiaza forma cuvintelor si variatiile lor gramaticale.
+- Substantivul are gen, numar si caz, iar aceste categorii influenteaza acordul in enunt.
+- Adjectivul se acorda cu substantivul determinat in gen, numar si caz.
+- Pronumele poate avea valoare de substitutie nominala cu nuante de persoana, posesie, demonstratie, relativitate.
+- Articolul poate fi hotarat, nehotarat, posesiv-genitival sau demonstrativ-adjectival, cu rol in determinare.
+- Verbul concentreaza informatia despre timp, mod, persoana, numar, diateza.
+- Formele nepersonale (infinitiv, gerunziu, participiu, supin) apar frecvent in itemi capcana.
+- Adverbul modifica verbul, adjectivul sau alt adverb si poate exprima grade de comparatie.
+- Prepozitia creeaza relatii sintactice si impune constructii specifice de caz.
+- Conjunctia realizeaza legaturi sintactice, cu impact direct in analiza frazei.
+- Interjectia are comportament special, dar poate influenta intonatia si functia comunicativa.
+- In testele grila, dificultatea apare mai ales la valori morfologice contextuale, nu la definitii memorate.
+- Metoda eficienta: identifici clasa, apoi categoria gramaticala, apoi verifici acordul si functia.
+- Daca doua variante par corecte, varianta valida este cea compatibila simultan cu forma si contextul.
+- Capcana frecventa: confuzia dintre adjectiv pronominal si pronume in contexte similare.
+- Capcana frecventa: identificarea gresita a supinului ca infinitiv.
+- Capcana frecventa: interpretarea cliticelor pronominale fara raportare la verbul regent.
+- Capcana frecventa: confundarea valorii adverbiale cu valoarea prepozitionala in constructii fixe.
+- Exercitiu recomandat: 30 de itemi zilnici de clasificare morfologica, cu justificare in 1-2 propozitii.
+- Exercitiu recomandat: analiza completa a 5 enunturi (parte de vorbire + categorie + functie) in cronometru 8 minute.
+- In practica evaluarii, morfologia este puntea dintre forma si functie: aceeasi forma poate avea valori diferite in contexte diferite.
+- Cliticizarea pronumelor personale este una dintre cele mai frecvente zone de eroare in itemii de norma.
+- Distinctia forma simpla/forma compusa la verb trebuie verificata impreuna cu valoarea temporala si aspectuala.
+- In raspunsurile de examen, justificarea corecta include minimum doua elemente: clasa morfologica si indicator contextual.
 
 **Exemple clare**
-- Exemplu 1: "copilul harnic" -> adjectivul "harnic" se acorda cu substantivul.
-- Exemplu 2: "a citi" (infinitiv), "citind" (gerunziu), "citit" (participiu).
-- Exemplu 3: "acelasi" in contexte diferite poate avea valoare adjectivala sau pronominala.
-- Exemplu 4: "i-am dat colegului cartea" -> "colegului" indica dativ.
+- Exemplu 1: "copiii atenti" -> acord corect adjectiv-substantiv la plural.
+- Exemplu 2: "de citit" -> supin cu valoare verbala.
+- Exemplu 3: "citind" -> gerunziu; exprima actiune simultana sau circumstantiala.
+- Exemplu 4: "acel" poate fi adjectiv pronominal demonstrativ in functie de context.
+- Exemplu 5: "i-am oferit" -> pronume personal clitic in dativ.
+- Exercitiu aplicat 1: identifica 15 forme nepersonale dintr-un text si explica valoarea fiecareia.
+- Exercitiu aplicat 2: corecteaza 10 enunturi cu acord gresit intre substantiv-adjectiv sau subiect-predicat.
+- Exercitiu aplicat 3: rescrie 8 enunturi ambigue astfel incat valoarea morfologica sa devina neechivoca.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Pot clasifica partile de vorbire variabile/nevariabile.
-- [ ] Pot identifica categoriile gramaticale pentru un cuvant dat.
-- [ ] Pot explica acordul adjectiv-substantiv si predicat-subiect.
-- [ ] Pot recunoaste formele verbale nepersonale fara ezitare.
-- [ ] Pot rezolva itemi de morfologie in timp limitat.
+- [ ] Recunosc corect partea de vorbire in enunturi noi.
+- [ ] Identific categoriile gramaticale fara ezitare.
+- [ ] Diferentiez formele nepersonale ale verbului.
+- [ ] Verific acordurile inainte de alegerea variantei.
+- [ ] Pot justifica morfologic raspunsul selectat.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
-- DOOM: `https://doom.lingv.ro/`
+- DOOM3: `https://doom.lingv.ro/`
 - DEX: `https://dexonline.ro/`
-- Institutul de Lingvistica (resurse): `https://lingv.ro/resurse-lingvistice/`
+- Institutul de Lingvistica: `https://lingv.ro/resurse-lingvistice/`
 - Academia Romana: `https://acad.ro/`
-
-**Control calitate**
-- [ ] Informatiile sunt valabile pentru sesiunea 2026.
-- [ ] Nu exista afirmatii fara sursa.
-- [ ] Regulament vs explicatii suplimentare sunt separate clar.
+- Morfologie (Wikipedia): `https://ro.wikipedia.org/wiki/Morfologie_(lingvistic%C4%83)`
+- Parte de vorbire (Wikipedia): `https://ro.wikipedia.org/wiki/Parte_de_vorbire`
+- Verb (Wikipedia): `https://ro.wikipedia.org/wiki/Verb`

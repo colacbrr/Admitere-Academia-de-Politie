@@ -1,50 +1,51 @@
 # Engleza - Sintaxa
 
-**Identificare**
-- Modul: `03_proba_scrisa`
-- Capitol: `limba_straina/engleza_sintaxa`
-- Ultima actualizare: `2026-02-11`
-- Ultima verificare surse: `2026-02-11`
-- Autor revizie: `echipa proiect`
-
 **Ce trebuie sa invete candidatul**
-- Ordinea cuvintelor si acordul in propozitie.
-- Tipuri de propozitii si structuri conditionale.
-- Constructii speciale (inversiune, emfaza, it/there).
+- Ordinea standard a cuvintelor in engleza.
+- Tipurile de propozitii conditionale si valorile lor semantice.
+- Reguli de reported speech si sequence of tenses.
+- Structuri avansate: inversion, emphasis, cleft sentences.
 
 **Ce trebuie sa pregateasca candidatul**
-- Seturi de exercitii pe conditionale I-II-III si mixte.
-- Fise de recapitulare pentru concordanta timpurilor.
-- Verificare finala: itemi grila pe structuri complexe.
+- Tabele comparative pentru conditionals (form + usage).
+- Seturi de transformari direct -> indirect speech.
+- Exercitii pe sentence transformation si error correction.
+- Simulare pe itemi de sintaxa in timp limitat.
 
 **Rezumat**
-Sintaxa include ordinea cuvintelor, acordul, conditionalele si constructiile speciale frecvent testate.
+Sintaxa in engleza este stricta. O singura pozitie gresita sau o concordanta incorecta poate invalida raspunsul, chiar daca vocabularul este bun.
 
 **Explicatie detaliata**
-- Ordinea cuvintelor in propozitie.
-- Acord si concordanta timpurilor.
-- Propozitii declarative, interogative, exclamative, imperative.
-- Propozitii conditionale I, II, III si mixte.
-- Propozitii temporale, vorbire directa si indirecta.
-- Inversiune si constructii emfatice.
-- Constructii cu "it" si "there".
+- Word order de baza: Subject + Verb + Object + complements/adverbials.
+- In engleza, ordinea are rol sintactic puternic; deplasarea termenilor schimba sensul sau corectitudinea.
+- Type 0 conditional exprima adevaruri generale (If + present, present).
+- Type 1 conditional exprima posibilitate reala in prezent/viitor (If + present, will + base verb).
+- Type 2 conditional exprima ipoteza nerealista in prezent (If + past simple, would + base verb).
+- Type 3 conditional exprima ipoteza nerealizata in trecut (If + past perfect, would have + past participle).
+- Mixed conditionals combina cadre temporale diferite.
+- Reported speech cere ajustari de timp, pronume, adverbe deictice.
+- Sequence of tenses optimizeaza concordanta in propozitii dependente.
+- Inversion apare dupa adverbe restrictive sau structuri formale (Rarely had I seen...).
+- Emphasis poate fi realizat prin structuri de tip cleft (It was ... that ...).
+- Erorile frecvente: conditionals mixate gresit, backshift incorect, word order influentat de romana.
+- Metoda practica: identifici relatia logica (conditie, consecinta, raportare), apoi aplici tiparul corect.
 
 **Exemple clare**
-- Exemplu 1: alegerea conditonalei corecte in functie de context.
-- Exemplu 2: transformarea vorbirii directe in indirecta fara erori de timp.
+- Exemplu 1: "If she studies, she will pass." -> Type 1.
+- Exemplu 2: "If I were you, I would revise more." -> Type 2.
+- Exemplu 3: "If they had left earlier, they would have arrived on time." -> Type 3.
+- Exemplu 4: "He said, 'I am ready'" -> "He said (that) he was ready.".
+- Exemplu 5: "Never have I seen such discipline." -> inversion for emphasis.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Cunosc ordinea standard a cuvintelor.
-- [ ] Pot aplica conditionalele corect.
-- [ ] Pot gestiona concordanta timpurilor.
-- [ ] Pot rezolva structuri cu inversiune si emfaza.
+- [ ] Pot identifica corect tipul conditionalului.
+- [ ] Aplic corect regula in reported speech.
+- [ ] Controlez ordinea cuvintelor in enunturi complexe.
+- [ ] Recunosc structurile de inversiune.
+- [ ] Pot explica de ce o varianta sintactica este corecta.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
-- British Council: `https://learnenglish.britishcouncil.org/`
 - Cambridge Grammar: `https://dictionary.cambridge.org/grammar/`
-
-**Control calitate**
-- [ ] Informatiile sunt valabile pentru sesiunea 2026.
-- [ ] Nu exista afirmatii fara sursa.
-- [ ] Regulament vs explicatii suplimentare sunt separate clar.
+- British Council LearnEnglish: `https://learnenglish.britishcouncil.org/`
+- English syntax (Wikipedia): `https://en.wikipedia.org/wiki/English_syntax`
