@@ -105,6 +105,7 @@ def _parse_markdown_chapter(markdown_path: Path) -> dict:
             "explicatie detaliata": "detalii",
             "surse": "surse",
             "capitole": "detalii",
+            "identificare": "ignore",
             "ce trebuie sa invete candidatul": "invata",
             "ce trebuie sa pregateasca candidatul": "pregateste",
             "exemple clare": "exemple",
@@ -120,6 +121,8 @@ def _parse_markdown_chapter(markdown_path: Path) -> dict:
         if not content:
             continue
 
+        if current_section == "ignore":
+            continue
         if current_section == "invata":
             learn.append(content)
         elif current_section == "pregateste":
@@ -185,6 +188,8 @@ def list_study_topics() -> list[dict]:
 
     for module in load_modules():
         module_id = module["id"]
+        if module_id.startswith("00_"):
+            continue
         summary = _extract_summary(GUIDE_DIR / module_id / "INDEX.md")
         chapter_count = len(_topic_chapters(module_id))
         topics.append(

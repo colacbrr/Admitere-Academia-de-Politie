@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import * as pdfjsLib from 'pdfjs-dist';
+	import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+
+	pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 	type Topic = {
 		id: string;
@@ -31,7 +35,21 @@
 		}>;
 	};
 
+	type CountdownItem = {
+		label: string;
+		date: string;
+		daysLeft: number;
+	};
+
 	const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000';
+	const examDateConfig = [
+		{ label: 'Proba fizica', date: '2026-07-20' },
+		{ label: 'Proba scrisa', date: '2026-08-01' },
+		{ label: 'Medical', date: '2026-08-09' },
+		{ label: 'Rezultate finale', date: '2026-09-02' },
+		{ label: 'Inmatriculare', date: '2026-09-12' }
+	];
+
 	let theme: 'light' | 'dark' = 'light';
 	let topics: Topic[] = [];
 	let selectedTopicId = '';
@@ -39,11 +57,33 @@
 	let selectedChapterId = '';
 	let isLoading = true;
 	let errorMessage = '';
+	let countdown: CountdownItem[] = [];
+
+	let completedChecklist: Record<string, Record<string, boolean>> = {};
+	let badges: string[] = [];
+
+	let pdfCanvas: HTMLCanvasElement | null = null;
+	let pdfDoc: import('pdfjs-dist').PDFDocumentProxy | null = null;
+	let pdfPage = 1;
+	let pdfPages = 0;
+	let pdfScale = 1.2;
+	let pdfLoading = false;
+	let pdfError = '';
+	let lastPdfUrl = '';
 
 	$: selectedChapter =
 		selectedTopic?.chapters.find((chapter) => chapter.id === selectedChapterId) ??
 		selectedTopic?.chapters[0] ??
 		null;
+
+	$: if (selectedTopic?.pdf_url && selectedTopic.pdf_url !== lastPdfUrl) {
+		lastPdfUrl = selectedTopic.pdf_url;
+		void loadPdf(selectedTopic.pdf_url);
+	}
+
+	$: if (selectedChapter) {
+		void recalcBadges();
+	}
 
 	function applyTheme(nextTheme: 'light' | 'dark') {
 		theme = nextTheme;
@@ -53,6 +93,79 @@
 
 	function toggleTheme() {
 		applyTheme(theme === 'light' ? 'dark' : 'light');
+	}
+
+	function computeCountdown() {
+		const now = new Date();
+		countdown = examDateConfig.map((entry) => {
+			const target = new Date(`${entry.date}T00:00:00`);
+			const diff = target.getTime() - now.getTime();
+			const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+			return { ...entry, daysLeft };
+		});
+	}
+
+	function chapterKey(chapterId: string): string {
+		return `${selectedTopicId}::${chapterId}`;
+	}
+
+	function sourceUrl(raw: string): string | null {
+		const match = raw.match(/https?:\/\/[^\s)]+/);
+		return match ? match[0] : null;
+	}
+
+	function loadChecklistState() {
+		const saved = localStorage.getItem('study-checklist-state');
+		if (!saved) return;
+		try {
+			completedChecklist = JSON.parse(saved) as Record<string, Record<string, boolean>>;
+		} catch {
+			completedChecklist = {};
+		}
+	}
+
+	function saveChecklistState() {
+		localStorage.setItem('study-checklist-state', JSON.stringify(completedChecklist));
+	}
+
+	function isChecked(chapterId: string, idx: number): boolean {
+		const key = chapterKey(chapterId);
+		return completedChecklist[key]?.[String(idx)] === true;
+	}
+
+	function toggleChecklist(chapterId: string, idx: number) {
+		const key = chapterKey(chapterId);
+		if (!completedChecklist[key]) completedChecklist[key] = {};
+		const id = String(idx);
+		completedChecklist[key][id] = !completedChecklist[key][id];
+		saveChecklistState();
+		void recalcBadges();
+	}
+
+	function checklistProgress(chapter: Chapter | null): { done: number; total: number; pct: number } {
+		if (!chapter) return { done: 0, total: 0, pct: 0 };
+		const total = chapter.checklist.length;
+		if (total === 0) return { done: 0, total: 0, pct: 0 };
+		let done = 0;
+		for (let i = 0; i < total; i += 1) {
+			if (isChecked(chapter.id, i)) done += 1;
+		}
+		return { done, total, pct: Math.round((done / total) * 100) };
+	}
+
+	async function recalcBadges() {
+		const chapter = selectedChapter;
+		if (!chapter) {
+			badges = [];
+			return;
+		}
+		const progress = checklistProgress(chapter);
+		const nextBadges: string[] = [];
+		if (progress.pct >= 25) nextBadges.push('Starter');
+		if (progress.pct >= 50) nextBadges.push('Consistent');
+		if (progress.pct >= 75) nextBadges.push('Focused');
+		if (progress.pct === 100) nextBadges.push('Ready');
+		badges = nextBadges;
 	}
 
 	async function fetchTopics() {
@@ -85,6 +198,60 @@
 		}
 	}
 
+	async function loadPdf(relativePdfUrl: string) {
+		pdfError = '';
+		pdfLoading = true;
+		try {
+			const response = await fetch(`${apiBase}${relativePdfUrl}`);
+			if (!response.ok) throw new Error('Nu am putut incarca PDF-ul.');
+			const data = await response.arrayBuffer();
+			const task = pdfjsLib.getDocument({ data });
+			pdfDoc = await task.promise;
+			pdfPages = pdfDoc.numPages;
+			pdfPage = 1;
+			await renderPdfPage();
+		} catch (error) {
+			pdfError = error instanceof Error ? error.message : 'Eroare la incarcarea PDF-ului';
+		} finally {
+			pdfLoading = false;
+		}
+	}
+
+	async function renderPdfPage() {
+		if (!pdfDoc || !pdfCanvas) return;
+		const page = await pdfDoc.getPage(pdfPage);
+		const viewport = page.getViewport({ scale: pdfScale });
+		const context = pdfCanvas.getContext('2d');
+		if (!context) return;
+		pdfCanvas.height = viewport.height;
+		pdfCanvas.width = viewport.width;
+		await page.render({ canvas: pdfCanvas, canvasContext: context, viewport }).promise;
+	}
+
+	async function prevPdfPage() {
+		if (!pdfDoc || pdfPage <= 1) return;
+		pdfPage -= 1;
+		await renderPdfPage();
+	}
+
+	async function nextPdfPage() {
+		if (!pdfDoc || pdfPage >= pdfPages) return;
+		pdfPage += 1;
+		await renderPdfPage();
+	}
+
+	async function zoomInPdf() {
+		if (!pdfDoc) return;
+		pdfScale = Math.min(pdfScale + 0.15, 2.2);
+		await renderPdfPage();
+	}
+
+	async function zoomOutPdf() {
+		if (!pdfDoc) return;
+		pdfScale = Math.max(pdfScale - 0.15, 0.7);
+		await renderPdfPage();
+	}
+
 	onMount(async () => {
 		const savedTheme = localStorage.getItem('study-theme');
 		if (savedTheme === 'light' || savedTheme === 'dark') {
@@ -93,6 +260,8 @@
 			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 			applyTheme(prefersDark ? 'dark' : 'light');
 		}
+		computeCountdown();
+		loadChecklistState();
 
 		try {
 			await fetchTopics();
@@ -108,24 +277,38 @@
 </script>
 
 <svelte:head>
-	<title>Ghid Admitere - Workspace de Studiu</title>
+	<title>Ghid Admitere - Platforma de studiu</title>
 	<meta
 		name="description"
-		content="Platforma de studiu pentru admitere: tema, subcapitole, rezumate, checklist si PDF oficial in acelasi ecran."
+		content="Platforma de studiu pentru admiterea la Academia de Politie: continut detaliat, calendar, gamification si surse verificabile."
 	/>
 </svelte:head>
 
 <div class="page-shell">
-	<header class="topbar">
+	<header class="hero">
 		<div>
 			<p class="eyebrow">Admitere Academia de Politie</p>
-			<h1>Workspace de studiu</h1>
+			<h1>Platforma de studiu si inscriere</h1>
+			<p class="intro">
+				Parcurgi capitolele in ordinea recomandata, studiezi detaliat fiecare subiect si verifici sursele
+				oficale direct din platforma.
+			</p>
 		</div>
 		<button class="theme-toggle" on:click={toggleTheme} aria-label="Comuta tema">
-			<span aria-hidden="true">{theme === 'light' ? 'L' : 'D'}</span>
+			<span>{theme === 'light' ? 'L' : 'D'}</span>
 			<span>{theme === 'light' ? 'Light' : 'Dark'}</span>
 		</button>
 	</header>
+
+	<section class="countdown-grid">
+		{#each countdown as item}
+			<article class="count-card">
+				<h3>{item.label}</h3>
+				<p>{item.date}</p>
+				<strong>{item.daysLeft >= 0 ? `${item.daysLeft} zile ramase` : 'Termen depasit'}</strong>
+			</article>
+		{/each}
+	</section>
 
 	{#if isLoading}
 		<p class="state">Se incarca datele...</p>
@@ -133,8 +316,9 @@
 		<p class="state error">{errorMessage}</p>
 	{:else}
 		<main class="layout-grid">
-			<aside class="panel sidebar">
-				<h2>Teme</h2>
+			<aside class="panel nav-panel">
+				<h2>Navigare module</h2>
+				<p class="panel-subtitle">Selecteaza un modul si apoi un capitol.</p>
 				<div class="topic-list">
 					{#each topics as topic}
 						<button
@@ -143,18 +327,16 @@
 							class:selected={topic.id === selectedTopicId}
 						>
 							<strong>{topic.title}</strong>
-							<span>{topic.chapter_count} subcapitole</span>
+							<span>{topic.chapter_count} capitole</span>
 						</button>
 					{/each}
 				</div>
 			</aside>
 
-			<section class="panel content">
+			<section class="panel study-panel">
 				{#if selectedTopic}
-					<div class="module-head">
-						<h2>{selectedTopic.title}</h2>
-						<p>{selectedTopic.summary}</p>
-					</div>
+					<h2>{selectedTopic.title}</h2>
+					<p class="panel-subtitle">{selectedTopic.summary}</p>
 
 					<div class="chapter-tabs">
 						{#each selectedTopic.chapters as chapter}
@@ -174,91 +356,96 @@
 							<p>{selectedChapter.summary}</p>
 
 							<h4>Ce trebuie sa inveti</h4>
-							{#if selectedChapter.learning_objectives.length > 0}
-								<ul>
-									{#each selectedChapter.learning_objectives as item}
-										<li>{item}</li>
-									{/each}
-								</ul>
-							{:else}
-								<p>Obiectivele de invatare sunt in curs de completare.</p>
-							{/if}
+							<ul>
+								{#each selectedChapter.learning_objectives as item}
+									<li>{item}</li>
+								{/each}
+							</ul>
 
 							<h4>Ce trebuie sa pregatesti</h4>
-							{#if selectedChapter.preparation_steps.length > 0}
-								<ul>
-									{#each selectedChapter.preparation_steps as item}
-										<li>{item}</li>
-									{/each}
-								</ul>
-							{:else}
-								<p>Pasii de pregatire sunt in curs de completare.</p>
-							{/if}
+							<ul>
+								{#each selectedChapter.preparation_steps as item}
+									<li>{item}</li>
+								{/each}
+							</ul>
 
-							<h4>Puncte cheie</h4>
-							{#if selectedChapter.details.length > 0}
-								<ul>
-									{#each selectedChapter.details as detail}
-										<li>{detail}</li>
-									{/each}
-								</ul>
-							{:else}
-								<p>Acest capitol nu are inca puncte-cheie structurate.</p>
-							{/if}
+							<h4>Informatii detaliate</h4>
+							<ul>
+								{#each selectedChapter.details as detail}
+									<li>{detail}</li>
+								{/each}
+							</ul>
 
 							<h4>Exemple</h4>
-							{#if selectedChapter.examples.length > 0}
-								<ul>
-									{#each selectedChapter.examples as item}
-										<li>{item}</li>
-									{/each}
-								</ul>
-							{:else}
-								<p>Exemplele pentru acest capitol sunt in curs de completare.</p>
-							{/if}
+							<ul>
+								{#each selectedChapter.examples as item}
+									<li>{item}</li>
+								{/each}
+							</ul>
 
-							<h4>Checklist rapid</h4>
-							{#if selectedChapter.checklist.length > 0}
-								<ul>
-									{#each selectedChapter.checklist as item}
-										<li>{item}</li>
-									{/each}
-								</ul>
-							{:else}
-								<p>Checklist-ul pentru acest capitol este in curs de completare.</p>
-							{/if}
+							<h4>Checklist de progres</h4>
+							<div class="progress-row">
+								<strong>{checklistProgress(selectedChapter).done}/{checklistProgress(selectedChapter).total}</strong>
+								<span>{checklistProgress(selectedChapter).pct}% complet</span>
+							</div>
+							<ul class="checklist-list">
+								{#each selectedChapter.checklist as item, idx}
+									<li>
+										<label>
+											<input
+												type="checkbox"
+												checked={isChecked(selectedChapter.id, idx)}
+												on:change={() => toggleChecklist(selectedChapter.id, idx)}
+											/>
+											<span>{item}</span>
+										</label>
+									</li>
+								{/each}
+							</ul>
 
-							<h4>Surse</h4>
-							{#if selectedChapter.sources.length > 0}
-								<ul>
-									{#each selectedChapter.sources as source}
-										<li>{source}</li>
-									{/each}
-								</ul>
-							{:else}
-								<p>Sursele pentru acest capitol sunt in curs de completare.</p>
-							{/if}
+							<div class="gamify-box">
+								<h4>Gamification</h4>
+								<p>Puncte progres: {checklistProgress(selectedChapter).done * 10}</p>
+								<p>Badge-uri: {badges.length > 0 ? badges.join(', ') : 'Niciun badge inca'}</p>
+							</div>
+
+							<h4>Surse si portale utile</h4>
+							<ul class="source-list">
+								{#each selectedChapter.sources as source}
+									<li>
+										{#if sourceUrl(source)}
+											<a href={sourceUrl(source)} target="_blank" rel="noreferrer">{source}</a>
+										{:else}
+											<span>{source}</span>
+										{/if}
+									</li>
+								{/each}
+							</ul>
 						</article>
 					{/if}
-				{:else}
-					<p>Selecteaza o tema pentru a incepe studiul.</p>
 				{/if}
 			</section>
 
 			<section class="panel pdf-panel">
-				<h2>Regulament oficial (PDF)</h2>
-				{#if selectedTopic?.pdf_url}
-					<iframe
-						title="Regulament admitere"
-						src={`${apiBase}${selectedTopic.pdf_url}#toolbar=1&navpanes=0&view=FitH`}
-						loading="lazy"
-					></iframe>
-					<a href={`${apiBase}${selectedTopic.pdf_url}`} target="_blank" rel="noreferrer">
-						Deschide in tab nou
-					</a>
-				{:else}
-					<p>Nu a fost gasit un PDF in radacina proiectului.</p>
+				<h2>Regulament PDF (inline)</h2>
+				<p class="panel-subtitle">PDF-ul este randat in aplicatie, fara descarcare fortata.</p>
+				<div class="pdf-controls">
+					<button type="button" on:click={prevPdfPage} disabled={pdfPage <= 1}>Pagina anterioara</button>
+					<span>{pdfPages > 0 ? `Pagina ${pdfPage} / ${pdfPages}` : 'PDF indisponibil'}</span>
+					<button type="button" on:click={nextPdfPage} disabled={pdfPage >= pdfPages}>Pagina urmatoare</button>
+				</div>
+				<div class="pdf-controls">
+					<button type="button" on:click={zoomOutPdf}>Zoom -</button>
+					<button type="button" on:click={zoomInPdf}>Zoom +</button>
+				</div>
+				{#if pdfLoading}
+					<p class="state">Se incarca PDF-ul...</p>
+				{:else if pdfError}
+					<p class="state error">{pdfError}</p>
 				{/if}
+				<div class="pdf-canvas-wrap">
+					<canvas bind:this={pdfCanvas}></canvas>
+				</div>
 			</section>
 		</main>
 	{/if}
@@ -266,104 +453,131 @@
 
 <style>
 	:global(:root) {
-		font-family: 'IBM Plex Sans', 'Segoe UI', Tahoma, sans-serif;
-		--bg: #f6f7f4;
-		--bg-soft: #e6ece5;
-		--card: #ffffff;
-		--text: #132018;
-		--muted: #4f6055;
-		--border: #c9d5cb;
-		--accent: #1f5f50;
-		--accent-soft: #deefe8;
+		font-family: 'Source Sans 3', 'Segoe UI', Tahoma, sans-serif;
+		--bg: #f3f5f2;
+		--bg-2: #dde6dc;
+		--panel: #ffffff;
+		--text: #111c15;
+		--muted: #4f6056;
+		--border: #c7d5c9;
+		--accent: #15513f;
+		--accent-soft: #dceee7;
 	}
 
 	:global(:root[data-theme='dark']) {
-		--bg: #0f1612;
-		--bg-soft: #1b2822;
-		--card: #1a241f;
-		--text: #e9f0eb;
-		--muted: #a5b9ad;
-		--border: #304139;
-		--accent: #80cfb8;
-		--accent-soft: #24443a;
+		--bg: #101813;
+		--bg-2: #1a2720;
+		--panel: #18231d;
+		--text: #e9f2ec;
+		--muted: #a7bcaf;
+		--border: #2e4036;
+		--accent: #84cdb7;
+		--accent-soft: #26493e;
 	}
 
 	:global(body) {
 		margin: 0;
-		background:
-			radial-gradient(circle at 15% 0%, var(--bg-soft), transparent 34%),
-			linear-gradient(160deg, var(--bg), var(--bg-soft));
+		background: radial-gradient(circle at 20% 0%, var(--bg-2), transparent 35%), var(--bg);
 		color: var(--text);
 	}
 
 	.page-shell {
-		min-height: 100vh;
 		padding: 1rem;
+		max-width: 1800px;
+		margin: 0 auto;
 	}
 
-	.topbar {
+	.hero {
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		gap: 1rem;
+		align-items: start;
+		padding: 1rem;
+		background: linear-gradient(130deg, var(--panel), var(--accent-soft));
+		border: 1px solid var(--border);
+		border-radius: 16px;
 		margin-bottom: 1rem;
 	}
 
 	.eyebrow {
 		margin: 0;
-		color: var(--muted);
-		font-size: 0.78rem;
+		font-size: 0.8rem;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.07em;
+		color: var(--muted);
 	}
 
 	h1 {
-		margin: 0.2rem 0 0;
-		font-family: 'Bitter', Georgia, serif;
+		margin: 0.2rem 0;
+		font-family: 'Source Serif 4', Georgia, serif;
+	}
+
+	.intro {
+		margin: 0;
+		max-width: 72ch;
+		line-height: 1.55;
+		color: var(--muted);
 	}
 
 	.theme-toggle {
 		display: inline-flex;
-		gap: 0.5rem;
+		gap: 0.4rem;
 		align-items: center;
 		border: 1px solid var(--border);
 		border-radius: 999px;
-		background: var(--card);
-		padding: 0.45rem 0.9rem;
-		color: var(--text);
+		padding: 0.45rem 0.85rem;
+		background: var(--panel);
 		cursor: pointer;
+		color: inherit;
+	}
+
+	.countdown-grid {
+		display: grid;
+		grid-template-columns: repeat(5, minmax(150px, 1fr));
+		gap: 0.7rem;
+		margin-bottom: 1rem;
+	}
+
+	.count-card {
+		padding: 0.8rem;
+		background: var(--panel);
+		border: 1px solid var(--border);
+		border-radius: 14px;
+	}
+
+	.count-card h3 {
+		margin: 0;
+		font-size: 0.95rem;
+	}
+
+	.count-card p {
+		margin: 0.45rem 0;
+		color: var(--muted);
+		font-size: 0.85rem;
 	}
 
 	.layout-grid {
 		display: grid;
-		gap: 1rem;
-		grid-template-columns: minmax(220px, 0.85fr) minmax(420px, 1.25fr) minmax(480px, 1.5fr);
+		grid-template-columns: minmax(220px, 0.8fr) minmax(520px, 1.35fr) minmax(500px, 1.2fr);
+		gap: 0.9rem;
 	}
 
 	.panel {
-		background: var(--card);
+		background: var(--panel);
 		border: 1px solid var(--border);
 		border-radius: 16px;
 		padding: 1rem;
-		box-shadow: 0 16px 28px rgb(0 0 0 / 0.1);
 	}
 
-	.state {
-		background: var(--card);
-		border: 1px solid var(--border);
-		border-radius: 12px;
-		padding: 1rem;
+	.panel h2 {
+		margin-top: 0;
+		font-family: 'Source Serif 4', Georgia, serif;
 	}
 
-	.state.error {
-		border-color: #a34343;
-		color: #a34343;
-	}
-
-	.sidebar h2,
-	.content h2,
-	.pdf-panel h2 {
-		margin: 0 0 0.75rem;
-		font-family: 'Bitter', Georgia, serif;
+	.panel-subtitle {
+		color: var(--muted);
+		margin-top: -0.3rem;
+		margin-bottom: 0.8rem;
 	}
 
 	.topic-list {
@@ -376,18 +590,13 @@
 	.topic-list button {
 		text-align: left;
 		display: grid;
-		gap: 0.22rem;
+		gap: 0.15rem;
 		padding: 0.65rem;
 		border: 1px solid var(--border);
-		border-radius: 12px;
 		background: transparent;
+		border-radius: 12px;
 		color: inherit;
 		cursor: pointer;
-	}
-
-	.topic-list button span {
-		font-size: 0.84rem;
-		color: var(--muted);
 	}
 
 	.topic-list button.selected {
@@ -395,9 +604,8 @@
 		border-color: var(--accent);
 	}
 
-	.module-head p {
-		margin-top: 0;
-		line-height: 1.5;
+	.topic-list button span {
+		font-size: 0.84rem;
 		color: var(--muted);
 	}
 
@@ -405,16 +613,16 @@
 		display: flex;
 		gap: 0.5rem;
 		flex-wrap: wrap;
-		margin-bottom: 0.8rem;
+		margin-bottom: 0.75rem;
 	}
 
 	.chapter-tabs button {
 		border: 1px solid var(--border);
-		background: transparent;
 		border-radius: 999px;
-		padding: 0.4rem 0.75rem;
-		color: inherit;
+		padding: 0.35rem 0.75rem;
+		background: transparent;
 		cursor: pointer;
+		color: inherit;
 	}
 
 	.chapter-tabs button.active {
@@ -423,10 +631,10 @@
 	}
 
 	.chapter-card {
-		background: color-mix(in srgb, var(--card), var(--bg-soft) 32%);
 		border: 1px solid var(--border);
+		background: color-mix(in srgb, var(--panel), var(--bg-2) 25%);
 		border-radius: 12px;
-		padding: 0.9rem;
+		padding: 0.85rem;
 	}
 
 	.chapter-card p {
@@ -435,35 +643,96 @@
 	}
 
 	.chapter-card ul {
-		padding-left: 1.2rem;
+		padding-left: 1.15rem;
 	}
 
-	.pdf-panel iframe {
-		width: 100%;
-		height: 74vh;
+	.progress-row {
+		display: flex;
+		gap: 0.8rem;
+		align-items: center;
+		margin-bottom: 0.4rem;
+	}
+
+	.checklist-list label {
+		display: flex;
+		gap: 0.5rem;
+		align-items: start;
+	}
+
+	.gamify-box {
+		padding: 0.7rem;
+		border: 1px dashed var(--border);
+		border-radius: 10px;
+		margin-bottom: 0.7rem;
+	}
+
+	.source-list a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.source-list a:hover {
+		text-decoration: underline;
+	}
+
+	.pdf-controls {
+		display: flex;
+		gap: 0.6rem;
+		align-items: center;
+		margin-bottom: 0.6rem;
+	}
+
+	.pdf-controls button {
 		border: 1px solid var(--border);
-		border-radius: 12px;
+		background: var(--panel);
+		border-radius: 9px;
+		padding: 0.35rem 0.6rem;
+		cursor: pointer;
+		color: inherit;
+	}
+
+	.pdf-controls button:disabled {
+		opacity: 0.5;
+		cursor: default;
+	}
+
+	.pdf-canvas-wrap {
+		overflow: auto;
+		border: 1px solid var(--border);
+		border-radius: 10px;
+		background: #d0d4d1;
+		max-height: 74vh;
+	}
+
+	.pdf-canvas-wrap canvas {
+		display: block;
+		margin: 0 auto;
 		background: #fff;
 	}
 
-	.pdf-panel a {
-		display: inline-block;
-		margin-top: 0.6rem;
-		color: var(--accent);
-		font-weight: 600;
+	.state {
+		padding: 0.7rem;
+		border-radius: 10px;
+		border: 1px solid var(--border);
+		background: var(--panel);
 	}
 
-	@media (max-width: 1320px) {
+	.state.error {
+		border-color: #9f3a3a;
+		color: #9f3a3a;
+	}
+
+	@media (max-width: 1400px) {
+		.countdown-grid {
+			grid-template-columns: repeat(2, minmax(180px, 1fr));
+		}
+
 		.layout-grid {
 			grid-template-columns: 1fr;
 		}
 
 		.topic-list {
-			max-height: 260px;
-		}
-
-		.pdf-panel iframe {
-			height: 58vh;
+			max-height: 280px;
 		}
 	}
 </style>

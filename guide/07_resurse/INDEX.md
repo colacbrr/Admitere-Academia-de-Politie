@@ -10,6 +10,7 @@ Acest modul centralizeaza sursele oficiale si academice folosite in proiect, org
 **Capitole**
 - Resurse oficiale principale
 - Resurse academice pe materii
+- Resurse extinse - Limba romana
 - Instrumente utile pentru studiu
 
 **Regula de utilizare**

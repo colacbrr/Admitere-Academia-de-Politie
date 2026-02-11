@@ -8,38 +8,50 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Sens propriu, figurat si contextual.
-- Relatii semantice: sinonimie, antonimie, omonimie, polisemie.
-- Mecanisme de imbogatire a vocabularului.
+- Sens propriu, figurat, contextual.
+- Sinonimie, antonimie, omonimie, paronimie, polisemie.
+- Formarea cuvintelor: derivare, compunere, conversiune, imprumut.
 
 **Ce trebuie sa pregateasca candidatul**
-- Liste tematice de termeni si familii lexicale.
-- Exercitii de sens contextual.
-- Verificare finala: itemi pe paronime si colocatii uzuale.
+- Liste tematice de termeni pe domenii (social, istoric, juridic, administrativ).
+- Fise de paronime frecvent confundate.
+- Exercitii zilnice de sens contextual.
+- Verificare finala: test cu itemi lexicali combinati.
 
 **Rezumat**
-Vocabularul acopera sensurile cuvintelor si mecanismele prin care limba isi extinde lexicul.
+Vocabularul ajuta la interpretarea corecta a enunturilor din test si la evitarea capcanelor semantice.
 
 **Explicatie detaliata**
-- Sens propriu, figurat, contextual.
-- Sinonime, antonime, omonime, polisemie.
-- Derivare, compunere, conversiune, imprumuturi.
-- Locutiuni si confuzii paronimice.
+- Sensul propriu este sensul de baza al unui cuvant.
+- Sensul figurat apare prin extensie stilistica sau metaforica.
+- Sensul contextual se stabileste prin relatia cu restul enuntului.
+- Sinonimele apropie sensuri, dar nu sunt mereu perfect interschimbabile.
+- Antonimele pot fi graduale (cald/rece) sau complementare (viu/mort).
+- Omonimele au forma identica, sensuri diferite.
+- Paronimele au forma apropiata si produc erori frecvente ("a investi" vs "a învesti").
+- Polisemia apare cand acelasi cuvant are mai multe sensuri corelate.
+- Derivarea foloseste prefixe/sufixe; compunerea uneste baze lexicale.
+- Conversiunea schimba clasa morfologica fara afixe.
 
 **Exemple clare**
-- Exemplu 1: alegerea sensului corect al unui cuvant in functie de context.
-- Exemplu 2: diferentierea a doua paronime folosite frecvent gresit.
+- Exemplu 1: "carte" (obiect) vs "cartea jocului" (metaforic/contextual).
+- Exemplu 2: "a evalua" / "a evolua" -> paronime, sens diferit.
+- Exemplu 3: "lumina" (substantiv) / "lumina" (verb, forma) in contexte distincte.
+- Exemplu 4: "nefericit" = derivare cu prefix.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Pot identifica sensul contextual.
-- [ ] Pot recunoaste relatiile semantice de baza.
-- [ ] Cunosc mecanismele de formare lexicala.
-- [ ] Am lucrat itemi cu paronime si locutiuni.
+- [ ] Pot stabili sensul contextual intr-un enunt necunoscut.
+- [ ] Pot diferentia minim 30 de perechi de paronime frecvente.
+- [ ] Pot identifica mecanismul de formare al unui cuvant.
+- [ ] Pot evita confuziile intre sinonime apropiate semantic.
+- [ ] Pot rezolva itemi lexicali rapid si argumentat.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
 - DEX: `https://dexonline.ro/`
 - DOOM: `https://doom.lingv.ro/`
+- Institutul de Lingvistica: `https://lingv.ro/resurse-lingvistice/`
+- Academia Romana: `https://acad.ro/`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.

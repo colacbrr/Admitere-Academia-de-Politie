@@ -8,38 +8,53 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Structura enuntului, propozitiei si frazei.
-- Coordonare, subordonare, functii sintactice.
-- Tipuri de propozitii subordonate si rolul lor.
+- Diferenta dintre enunt, propozitie, fraza.
+- Coordonare vs subordonare.
+- Functii sintactice esentiale (subiect, predicat, atribut, complemente).
+- Identificarea tipurilor de propozitii subordonate.
 
 **Ce trebuie sa pregateasca candidatul**
-- Fise pe tipuri de propozitii si functii sintactice.
-- Exercitii de punctuatie si analiza sintactica.
-- Verificare finala: test grila pe capitol.
+- Fisa de analiza pentru fiecare tip de propozitie.
+- Set de reguli de punctuatie in fraza.
+- Exercitii zilnice de identificare functii sintactice.
+- Verificare finala: 2 teste grila complete pe capitol.
 
 **Rezumat**
-Capitolul acopera enuntul, propozitia, fraza, functiile sintactice si subordonatele, exact pe zona ceruta la test.
+Capitolul fixeaza regulile care apar cel mai des in itemii de gramatica: structura frazei, raporturi sintactice, punctuatie.
 
 **Explicatie detaliata**
-- Enunturi, tipuri de propozitii, semne de punctuatie.
-- Coordonare si subordonare in fraza.
-- Functii sintactice si realizari frecvente.
-- Propozitii subordonate si valoarea lor in context.
+- Enuntul poate fi asertiv, interogativ, exclamativ, imperativ; tipul enuntului influenteaza punctuatia.
+- Propozitia simpla are un singur predicat, fraza are minimum doua predicate.
+- Coordonarea leaga unitati de acelasi rang sintactic, subordonarea introduce o dependenta.
+- Subiectul raspunde la intrebarea "cine? ce?" in raport cu predicatul.
+- Predicatul verbal exprima actiunea; predicatul nominal contine copula + nume predicativ.
+- Atributul determina un substantiv/pronume; poate fi adjectival, substantival, prepozitional.
+- Complementul direct raspunde frecvent la "pe cine? ce?"; indirectul la "cui?".
+- Complementele circumstantiale arata loc, timp, mod, cauza, scop.
+- Propozitia atributiva determina un termen nominal din regenta.
+- Completiva directa completeaza un verb tranzitiv; indirecta completeaza un verb ne-tranzitiv/prepozitional.
+- Circumstantialele subordonate indica relatii logice (timp, cauza, scop etc.) in fraza.
+- Virgula separa adesea propozitii subordonate explicative sau elemente incidente.
 
 **Exemple clare**
-- Exemplu 1: identificarea corecta a functiei sintactice intr-o propozitie dezvoltata.
-- Exemplu 2: alegerea variantei corecte de punctuatie intr-o fraza cu subordonate.
+- Exemplu 1: "Elevul care invata zilnic progreseaza." -> "care invata zilnic" = subordonata atributiva.
+- Exemplu 2: "Stiu ca examenul este dificil." -> "ca examenul este dificil" = completiva directa.
+- Exemplu 3: "Daca repeti constant, obtii rezultate." -> subordonata circumstantiala conditionala.
+- Exemplu 4: "Cartea elevului studios" -> "studios" = atribut adjectival.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Cunosc tipurile principale de propozitii.
-- [ ] Pot distinge coordonare vs subordonare.
-- [ ] Pot identifica functii sintactice uzuale.
-- [ ] Pot rezolva itemi de punctuatie gramaticala.
+- [ ] Pot delimita corect propozitiile din fraza.
+- [ ] Pot identifica subiectul si predicatul in exemple diferite.
+- [ ] Pot clasifica minimum 8 tipuri de subordonate.
+- [ ] Pot justifica semnele de punctuatie in fraza.
+- [ ] Pot rezolva itemi grila fara sa ghicesc.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
 - DOOM: `https://doom.lingv.ro/`
 - DEX: `https://dexonline.ro/`
+- Institutul de Lingvistica (resurse): `https://lingv.ro/resurse-lingvistice/`
+- Programa LLR: `https://www.edu.ro/sites/default/files/2_Anexa_%202_Limba_si_literatura_romana_TC_IX_90.pdf`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.

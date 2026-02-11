@@ -48,5 +48,8 @@ def study_pdf(pdf_name: str) -> FileResponse:
     return FileResponse(
         path=Path(pdf_file),
         media_type="application/pdf",
-        headers={"Content-Disposition": "inline"},
+        headers={
+            "Content-Disposition": f'inline; filename="{pdf_file.name}"',
+            "Cache-Control": "public, max-age=3600",
+        },
     )

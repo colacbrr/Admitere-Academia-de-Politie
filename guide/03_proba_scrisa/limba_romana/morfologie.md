@@ -8,40 +8,50 @@
 - Autor revizie: `echipa proiect`
 
 **Ce trebuie sa invete candidatul**
-- Categoriile morfologice esentiale.
-- Particularitati pentru verb, substantiv, pronume, adjectiv, adverb.
-- Reguli de acord si utilizare corecta in context.
+- Clasele morfologice variabile si nevariabile.
+- Categoriile gramaticale (gen, numar, caz, persoana, timp, mod).
+- Acordurile obligatorii in enunt.
 
 **Ce trebuie sa pregateasca candidatul**
-- Tabele de recapitulare pe clase morfologice.
-- Exercitii de recunoastere si aplicare.
-- Verificare finala: mini-test pe fiecare clasa morfologica.
+- Tabel de recapitulare pentru fiecare parte de vorbire.
+- Exercitii de identificare a valorii morfologice in context.
+- Set separat pentru verbe si forme nepersonale.
+- Verificare finala: test mixt (verb + pronume + adjectiv + articol).
 
 **Rezumat**
-Morfologia include partile de vorbire si regulile lor de functionare in limba romana standard.
+Morfologia consolideaza structura cuvantului in limba romana si regulile de utilizare corecta in context.
 
 **Explicatie detaliata**
-- Verbul: moduri, timpuri, forme nepersonale.
-- Substantivul: gen, numar, caz, tipuri.
-- Pronumele si adjectivul pronominal.
-- Adjectivul si acordul.
-- Adverbul si gradele de comparatie.
-- Prepozitia si articolul.
+- Substantivul: comun/propriu, concret/abstract, individual/colectiv.
+- Substantivul are gen, numar, caz; functia sintactica depinde de context.
+- Articolul poate fi hotarat, nehotarat, posesiv, demonstrativ.
+- Adjectivul se acorda in gen, numar, caz cu substantivul determinat.
+- Pronumele are clase multiple: personal, de politete, posesiv, demonstrativ, relativ, nehotarat.
+- Verbul: diateza activa/pasiva/reflexiva, moduri personale si nepersonale.
+- Modurile personale: indicativ, conjunctiv, conditional-optativ, imperativ.
+- Forme nepersonale: infinitiv, gerunziu, participiu, supin.
+- Adverbul exprima circumstante; unele adverbe au grade de comparatie.
+- Prepozitia introduce complemente; alegerea prepozitiei corecte afecteaza sensul.
 
 **Exemple clare**
-- Exemplu 1: identificarea valorii morfologice corecte intr-un item grila.
-- Exemplu 2: corectarea unui acord gresit intre adjectiv si substantiv.
+- Exemplu 1: "copilul harnic" -> adjectivul "harnic" se acorda cu substantivul.
+- Exemplu 2: "a citi" (infinitiv), "citind" (gerunziu), "citit" (participiu).
+- Exemplu 3: "acelasi" in contexte diferite poate avea valoare adjectivala sau pronominala.
+- Exemplu 4: "i-am dat colegului cartea" -> "colegului" indica dativ.
 
 **Checklist rapid (pentru utilizator)**
-- [ ] Cunosc principalele parti de vorbire.
-- [ ] Pot recunoaste valorile morfologice in context.
-- [ ] Pot aplica regulile de acord.
-- [ ] Pot rezolva itemi grila de morfologie fara suport extern.
+- [ ] Pot clasifica partile de vorbire variabile/nevariabile.
+- [ ] Pot identifica categoriile gramaticale pentru un cuvant dat.
+- [ ] Pot explica acordul adjectiv-substantiv si predicat-subiect.
+- [ ] Pot recunoaste formele verbale nepersonale fara ezitare.
+- [ ] Pot rezolva itemi de morfologie in timp limitat.
 
 **Surse**
 - Regulament oficial: `Regulament-admitere-licenta-2026-actualizare-18-01-2026.pdf`
 - DOOM: `https://doom.lingv.ro/`
 - DEX: `https://dexonline.ro/`
+- Institutul de Lingvistica (resurse): `https://lingv.ro/resurse-lingvistice/`
+- Academia Romana: `https://acad.ro/`
 
 **Control calitate**
 - [ ] Informatiile sunt valabile pentru sesiunea 2026.
