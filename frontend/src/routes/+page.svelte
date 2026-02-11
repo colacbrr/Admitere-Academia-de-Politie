@@ -213,12 +213,14 @@
 	let progressChannel: BroadcastChannel | null = null;
 
 	let pdfCanvas: HTMLCanvasElement | null = null;
+	let pdfCanvasWrap: HTMLDivElement | null = null;
 	let pdfjsLib: any = null;
 	let pdfReady = false;
 	let pdfDoc: any = null;
 	let pdfPage = 1;
 	let pdfPages = 0;
-	let pdfScale = 1.2;
+	let pdfScale = 1;
+	let pdfManualZoom = false;
 	let pdfLoading = false;
 	let pdfError = '';
 	let lastPdfUrl = '';
@@ -1339,12 +1341,24 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 			pdfDoc = await task.promise;
 			pdfPages = pdfDoc.numPages;
 			pdfPage = 1;
+			pdfManualZoom = false;
+			await fitPdfScaleToContainer(true);
 			await renderCurrentPdfAfterMount();
 		} catch (error) {
 			pdfError = error instanceof Error ? error.message : 'Eroare la incarcarea PDF-ului';
 		} finally {
 			pdfLoading = false;
 		}
+	}
+
+	async function fitPdfScaleToContainer(force = false) {
+		if (!pdfDoc || !pdfCanvasWrap) return;
+		if (!force && pdfManualZoom) return;
+		const firstPage = await pdfDoc.getPage(1);
+		const baseViewport = firstPage.getViewport({ scale: 1 });
+		const availableWidth = Math.max(300, pdfCanvasWrap.clientWidth - 20);
+		const fittedScale = availableWidth / baseViewport.width;
+		pdfScale = Math.max(0.72, Math.min(1.35, fittedScale));
 	}
 
 	async function renderPdfPage() {
@@ -1377,12 +1391,14 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 
 	async function zoomInPdf() {
 		if (!pdfDoc) return;
+		pdfManualZoom = true;
 		pdfScale = Math.min(pdfScale + 0.15, 2.2);
 		await renderPdfPage();
 	}
 
 	async function zoomOutPdf() {
 		if (!pdfDoc) return;
+		pdfManualZoom = true;
 		pdfScale = Math.max(pdfScale - 0.15, 0.7);
 		await renderPdfPage();
 	}
@@ -1412,6 +1428,14 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	}
 
 	onMount(() => {
+		const onResize = () => {
+			if (activePane !== 'intro' || !pdfDoc) return;
+			void (async () => {
+				await fitPdfScaleToContainer();
+				await renderPdfPage();
+			})();
+		};
+
 		const start = async () => {
 			await initPdfJs();
 			const savedTheme = localStorage.getItem('study-theme');
@@ -1451,8 +1475,10 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		};
 
 		void start();
+		window.addEventListener('resize', onResize);
 
 		return () => {
+			window.removeEventListener('resize', onResize);
 			if (progressChannel) {
 				progressChannel.close();
 				progressChannel = null;
@@ -1646,7 +1672,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 					{:else if pdfError}
 						<p class="state error">{pdfError}</p>
 					{/if}
-					<div class="pdf-canvas-wrap">
+					<div class="pdf-canvas-wrap" bind:this={pdfCanvasWrap}>
 						<canvas bind:this={pdfCanvas}></canvas>
 					</div>
 				</div>
@@ -2689,7 +2715,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 
 	.games-grid {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(260px, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 0.7rem;
 		margin-bottom: 0.6rem;
 	}
@@ -2699,6 +2725,10 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		border-radius: 12px;
 		padding: 0.65rem;
 		background: color-mix(in srgb, var(--panel), var(--bg-2) 20%);
+		min-width: 0;
+		overflow: hidden;
+		display: grid;
+		gap: 0.4rem;
 	}
 
 	.game-card h5 {
@@ -2713,6 +2743,7 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		padding: 0.45rem 0.55rem;
 		background: color-mix(in srgb, var(--panel), var(--control-green) 14%);
 		color: inherit;
+		max-width: 100%;
 	}
 
 	.game-card textarea {
@@ -2756,6 +2787,18 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 	.match-list label {
 		display: grid;
 		gap: 0.25rem;
+		min-width: 0;
+	}
+
+	.game-card p,
+	.game-card span,
+	.match-list span,
+	.game-feedback,
+	.game-result,
+	.source-item-body,
+	.chapter-card li {
+		overflow-wrap: anywhere;
+		word-break: break-word;
 	}
 
 	.muted-note {
@@ -2822,12 +2865,16 @@ async function fetchTopicDetail(topicId: string, preferredChapterId = '') {
 		border-radius: 10px;
 		background: #d0d4d1;
 		max-height: 74vh;
+		padding: 0.55rem;
 	}
 
 	.pdf-canvas-wrap canvas {
 		display: block;
 		margin: 0 auto;
 		background: #fff;
+		max-width: 100%;
+		height: auto;
+		border-radius: 4px;
 	}
 
 	.mobile-controls {
